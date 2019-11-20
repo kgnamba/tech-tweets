@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- bootstrap --> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Jquery--> 
+        <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script type="text/Javascript" src="{{url_for('static', filename='home.js')}}"></script>
+        
+        <script>
+        </script>
+    </head>
+    <style>
+
+        .examples{
+            background-color: #38A1F3;
+        }
+
+        .twitter-moment{
+            padding: 30px;
+        }
+
+
+        #heading{
+            color: #111; 
+            font-family: 'Helvetica Neue', sans-serif; 
+            font-size: 40px; 
+            font-weight: lighter; letter-spacing: 3px; line-height: 1; text-align: center; 
+            padding-top: 200px;
+            padding-bottom: 50px;
+            }
+        
+        button:focus {outline:0;}
+        
+        .home-button{
+            border-radius: 8px;
+            width: 130px;
+            height: 60px;
+            font-size: 15px;
+            background-color: white;
+            border: 1px solid #328CC1;
+        }
+
+        .home-button:hover{
+            background-color: #328CC1;
+        }
+
+        #log-in-btn{
+            display: inline-block;
+            margin-right: 10px;
+            margin-left: 200px;
+        }
+
+
+        #create-account-btn{
+            display: inline-block;
+        }
+
+    </style>
+    <body>
+        <div class="box">
+            <div class="row">
+                <div class="col-md-6 examples"> 
+                        <a class="twitter-moment" href="https://twitter.com/i/moments/897362339518926849?ref_src=twsrc%5Etfw">A thread about dung beetles</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+                <div class="col-md-6 log-in">
+                    <div id="heading"> Tweetorial</div>
+                    <button type="button" class="home-button" id="log-in-btn">Login Now</button>
+                    <button type="button" class="home-button" id="create-account-btn">Create Account</button>
+                </div>
+            </div>
+        </div>
+        
+
+    </body>
+</html>
