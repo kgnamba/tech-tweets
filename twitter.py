@@ -1,7 +1,9 @@
 from requests_oauthlib import OAuth1Session
+import os
+from dotenv import load_dotenv
 
-consumer_key = 'G3WTD5N5Hvb75c3b810q04U08'
-consumer_secret = 'IMaBHKM3EDtqsfqKBtUdgpX1lUknm9biKR6rd4524E9tS2pSHP'
+consumer_key = os.getenv("consumer_key")
+consumer_secret = os.getenv("consumer_secret")
 resource_owner_key = ''
 resource_owner_secret = ''
 
