@@ -8,6 +8,7 @@ import requests
 import post
 import twitter
 import os
+from dotenv import load_dotenv
 import requests
 import tweepy
 import json
@@ -20,8 +21,8 @@ app = Flask(__name__)
 CORS(app)
 
 # This information is obtained upon registration of a new client on twitter
-key = ''
-secret = ''
+key = os.getenv("consumer_key")
+secret = os.getenv("consumer_secret")
 oauth_token = ''
 oauth_token_secret = ''
 a_token = ''
@@ -39,6 +40,7 @@ def home(name=None):
     return render_template('home.html')
 
 @app.route('/twitter_interface', methods=['GET', 'POST'])
+# Setting up twitter_interface, gets user info
 def twitter_interface(name=None):
     global a_token
     global a_token_secret
@@ -73,6 +75,7 @@ def twitter_interface(name=None):
 
 @app.route('/auth', methods=['GET', 'POST'])
 def auth():
+    # This uses consumer_key and secret to get request from API
     request_token = OAuth1Session(client_key=key, client_secret=secret)
     url = 'https://api.twitter.com/oauth/request_token'
     data = request_token.get(url)
@@ -81,7 +84,8 @@ def auth():
     ro_secret = str.split(data_token[1], '=')
     oauth_token= ro_key[1]
     oauth_token_secret = ro_secret[1]
-    # Create the redirection url and send the user to twitter
+    #print(oauth_token_secret)
+    # Create the redirection url and send the user to twitter to give app permissions
     auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token)
     return auth
 
