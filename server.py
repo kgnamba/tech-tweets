@@ -131,7 +131,7 @@ def save_tweet():
     return {'tweets': tweets}
 
 @app.route("/post", methods=["POST"])
-def post():
+def post_func():
 
     global tweets
     
