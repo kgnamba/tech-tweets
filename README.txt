@@ -20,3 +20,9 @@ Functions:
     callback - self-explanatory
     save_tweet - POST request to add tweet to thread. Saves tweet into thread.
     post - posts thread to twitter account
+
+twitter.py
+Bunch of twitter authentication functions that seem to be unconnected to server.py
+
+twitter.js
+Javascript functions for twitter_interface, posting twitter methods
