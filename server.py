@@ -5,7 +5,7 @@ from flask import Flask, Response, request, jsonify, json, redirect, session
 from requests_oauthlib import OAuth1, OAuth1Session
 from urllib.parse import urlparse
 import requests
-import post 
+import post
 import twitter
 import os
 import requests
@@ -32,7 +32,7 @@ request_url = "https://api.twitter.com/oauth/request_token"
 auth_url = "http://api.twitter.com/oauth/authorize"
 access_url = "https://api.twitter.com/oauth/access_token"
 update_url = "http://api.twitter.com/1/statuses/update.json"
-callback = 'http://127.0.0.1:5000/callback'
+callback_url = 'http://127.0.0.1:5000/callback'
 
 @app.route('/')
 def home(name=None):
