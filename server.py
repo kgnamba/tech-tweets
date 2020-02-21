@@ -37,6 +37,7 @@ callback_url = 'http://127.0.0.1:5000/callback'
 
 @app.route('/')
 def home(name=None):
+    #print(key)
     return render_template('home.html')
 
 @app.route('/twitter_interface', methods=['GET', 'POST'])
@@ -60,18 +61,24 @@ def twitter_interface(name=None):
 
     info = r.text
     print(info)
+    try:
+        info_data = str.split(info, '&')
+        a_token = str.split(info_data[0], '=')[1]
+        a_token_secret = str.split(info_data[1], '=')[1]
+        user_id = str.split(info_data[2], '=')[1]
+        screen_name = str.split(info_data[3], '=')[1]
 
-    info_data = str.split(info, '&')
-    a_token = str.split(info_data[0], '=')[1]
-    a_token_secret = str.split(info_data[1], '=')[1]
-    user_id = str.split(info_data[2], '=')[1]
-    screen_name = str.split(info_data[3], '=')[1]
+        print("recieved relevant informaiton")
+        print(user_id)
+        print(screen_name)
 
-    print("recieved relevant informaiton")
-    print(user_id)
-    print(screen_name)
-
-    return render_template('twitter_interface.html', profile_img=profile_img, a_token=a_token, a_token_secret=a_token_secret,user_id=user_id, screen_name=screen_name)
+        return (render_template('twitter_interface.html', profile_img=profile_img, a_token=a_token,
+         a_token_secret=a_token_secret,user_id=user_id, screen_name=screen_name))
+    
+    except:
+        return render_template('home.html')
+    
+    
 
 @app.route('/auth', methods=['GET', 'POST'])
 def auth():
