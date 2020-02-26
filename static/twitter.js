@@ -20,7 +20,7 @@ var wordCount = function(){
 
 var updateTweets = function(tweets){
   $("#tweets").empty()
-  console.log("Within udpate Tweets")
+  console.log("Within update Tweets")
   $.each(tweets, function( index, value ){
     createNewTweet(value);
   });
@@ -30,18 +30,18 @@ var updateTweets = function(tweets){
 var createNewTweet = function(tweetData){
   console.log("creating new tweets")
   var textArea = $('<textarea id="tweet-text-modal" rows="7" cols="70">');
-  var checkBox = $('<div class="add_tweet"><input type="checkbox" name="add_tweet"></div>');
+  //var checkBox = $('<div class="add_tweet"><input type="checkbox" name="add_tweet"></div>');
   textArea.append(tweetData);
-  textArea.prepend('\n');
-  var date = new Date();
-  var time = date.toLocaleString();
-  id = $("#screen_name").text();
-  console.log("ID")
-  console.log(id)
-  textArea.prepend(id + ' ' + time);
+  //textArea.prepend('\n');
+  // var date = new Date();
+  // var time = date.toLocaleString();
+  //  id = $("#screen_name").text();
+  // console.log("ID")
+  // console.log(id)
+  // textArea.prepend(id + ' ' + time);
   $("#tweets").prepend(textArea)
-  $("#tweets").prepend(checkBox)
-  $("#tweets").append('<br>')
+  //$("#tweets").prepend(checkBox)
+  //$("#tweets").append('<br>')
 };
 
 
@@ -50,9 +50,9 @@ $(document).on('change', '#post_text', function() {
   wordCount();
 });
 
-var saveTweet = function(message){
+var addTweet = function(message){
   $.ajax({
-        type: "POST", url: "save_tweet", dataType : "json", contentType: "application/json; charset=utf-8",
+        type: "POST", url: "add_tweet", dataType : "json", contentType: "application/json; charset=utf-8",
     data : JSON.stringify({'message': message}),
         success: function(result){
           updateTweets(result['tweets'])
@@ -138,17 +138,22 @@ $(document).ready(function(){
 
     $(document).on('click',"#post_btn",function() {
       var message = $("#post_text").val();
-      saveTweet(message)
+      if (message.length > 0) { 
+        // this condition is so that no extra tweet posted if 
+        // user has textbox selected
+        addTweet(message)
+      }
       post(message)
       $("#post_text").val('');
       wordCount();
     });
 
-    $(document).on('click',"#save_btn",function() {
+    $(document).on('click',"#add_btn",function() {
       var message = $("#post_text").val();
-      saveTweet(message)
+      addTweet(message)
       $("#post_text").val('');
       wordCount();
+      console.log("add buttton clicked")
     });
 
     $("input[type='image']").click(function() {
