@@ -37,7 +37,6 @@ callback_url = 'http://127.0.0.1:5000/callback'
 
 @app.route('/')
 def home(name=None):
-    #print(key)
     return render_template('home.html')
 
 @app.route('/twitter_interface', methods=['GET', 'POST'])
@@ -72,13 +71,10 @@ def twitter_interface(name=None):
         print(user_id)
         print(screen_name)
 
-        return (render_template('twitter_interface.html', profile_img=profile_img, a_token=a_token,
-         a_token_secret=a_token_secret,user_id=user_id, screen_name=screen_name))
+        return (render_template('twitter_interface.html', profile_img=profile_img, a_token=a_token, a_token_secret=a_token_secret,user_id=user_id, screen_name=screen_name))
     
     except:
-        return render_template('home.html')
-    
-    
+        return render_template('home.html') 
 
 @app.route('/auth', methods=['GET', 'POST'])
 def auth():
@@ -95,6 +91,10 @@ def auth():
     # Create the redirection url and send the user to twitter to give app permissions
     auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token)
     return auth
+
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    return (render_template('twitter_interface.html'))
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
@@ -128,8 +128,8 @@ def callback():
     
     return ""
 
-@app.route("/save_tweet", methods=["GET", "POST"])
-def save_tweet():
+@app.route("/add_tweet", methods=["GET", "POST"])
+def add_tweet():
     global tweets
 
     json_data = request.get_json()
