@@ -1,3 +1,9 @@
+# big data files
+data/
+
+# API keys
+*.env
+
 # virtualenv
 env/
 

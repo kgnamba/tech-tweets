@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- bootstrap --> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+        <!-- Jquery--> 
+        <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+        <!-- embedded tweet formatter -->
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        <!-- flask javascript -->
+        <script type="text/Javascript" src="{{url_for('static', filename='news_collector.js')}}"></script>
+    </head>
+
+    <style>
+        #heading{
+            color: #111; 
+            font-family: 'Helvetica Neue', sans-serif; 
+            font-size: 40px; 
+            font-weight: lighter; letter-spacing: 3px; line-height: 1; text-align: center; 
+            padding-top: 100px;
+            padding-bottom: 20px;
+            }
+        .card {
+            margin-top: 20px;
+        }
+        .dropdown-toggle {
+            margin-bottom: 10px;
+        }
+        .blockquote-footer {
+            margin-top: 0px;
+            margin-bottom: 15px;
+        }
+        .article {
+            margin-bottom: 0px;
+        }
+    </style>
+    
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 first-tweet"> 
+
+                    <div id="heading">Draft Your Tweetorial</div>
+                    
+                    
+
+                    
+                    
+
+                    <div class="card alert alert-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Write the first tweet</h5>
+                            
+                            <div class="dropdown">
+                              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Example topic sentences
+                              </button>
+                              <div class="dropdown-menu small" aria-labelledby="dropdownMenuButton">
+                              </div>
+                            </div>
+
+                            <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6 news">
+                    <div id="heading">Support</div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <nav aria-label="breadcrumb">
+                              <ol class="breadcrumb"></ol>
+                            </nav>
+
+                            <div class='panel types'>
+                                <p class="lead">Writing the hook</p>
+                                <p class="card-text">
+                                    The first tweet in a thread should contain something to capture the reader's attention. Good 'hooks' often contain one or more of the following:
+                                    <ul class='types-list list-style'></ul>
+                                </p>
+                            </div>
+
+                            <div class='panel newsapi-bert'>
+                                <p class='lead'>News headlines can be good model hooks</p>
+                                <p class='get-help'><a href="#">See news headlines related to your first tweet</a></p>
+                                <h6 class="query-text"></h6>
+                                <br />
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <div class="news-results"></div>
+                            </div>
+
+                            <div class='panel newsapi-goog'>
+                                <p class='lead'>News headlines can be good model hooks</p>
+                                <p class='get-goog-help'><a href="#">See news headlines related to your first tweet</a></p>
+                                <h6 class="goog-query-text"></h6>
+                                <br />
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <div class="goognews-results"></div>
+                            </div>
+
+
+                            <div class='panel tweets'>
+                                <button class='btn btn-sm btn-primary auth'>authenticate your twitter account</button>
+
+                                <button class='btn btn-sm btn-primary get-tweets'>get related tweets</button>
+
+                                <div class='statuses'>
+                                    {% for status in statuses %}
+                                        <blockquote class='twitter-tweet'>
+                                            <p lang="en" dir="ltr">
+                                                {{status.full_text}}
+                                            </p>
+                                            &mdash; status.user.name (@{{status.user.screen_name}}) {{status.created_at}} <a href="https://twitter.com/{{status.user.screen_name}}/status/{{status.id_str}}" target="_blank">original tweet</a>
+                                        </blockquote>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+
+
+                    
+                </div>
+            </div>
+        </div>
+        
+
+    </body>
+</html>
