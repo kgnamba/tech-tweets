@@ -57,8 +57,6 @@ print('api_keys', api_keys)
 
 tweepyauth = tweepy.OAuthHandler(twitter_keys['consumer_key'], twitter_keys['consumer_secret'])
 
-twitter_keys = {'oauth_token': '', 'oauth_token_secret': '', 'consumer_key': 'OkdTnMuwgdFjeoxe93Vz4vPDt', 'consumer_secret': 'LTA7csggcGzCHNj80oVjwT1gXfSyB087aiwRa8cZfdeSLzDm7i', 'access_token': '2490180804-ehRtBghp9nfZmgCriW5K1PwBDHqPPlEvPD4F9HG', 'access_token_secret': 'HPnbTJmQgUdOAmDIfRf1nXRhK48nRgKeLgA0xlyV2Xbd4', 'token': ('2490180804-ehRtBghp9nfZmgCriW5K1PwBDHqPPlEvPD4F9HG', 'HPnbTJmQgUdOAmDIfRf1nXRhK48nRgKeLgA0xlyV2Xbd4')}
-
 tweet_emb_pth = 'data/tweet_emb.pickle'
 
 @app.route('/')
