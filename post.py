@@ -11,6 +11,7 @@ consumer_secret = os.getenv("consumer_secret")
 access_token = os.getenv("access_token")
 access_token_secret = os.getenv("access_token_secret")
 url = 'https://www.columbia.edu/'
+#url = 'http://127.0.0.1:5000' 
 
 def run_auth(status):
     # authentication of consumer key and secret 
