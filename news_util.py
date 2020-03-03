@@ -101,7 +101,7 @@ def get_abc_headlines(pkl_fle_nme):
         pickle.dump([articles, headlines_emb], pkl)
 
 
-date1 = '2020-02-24'
-date2 = '2020-02-25'
+date1 = '2020-02-26'
+date2 = '2020-02-27'
 fle_nme = f'data/newsapi-articles_{date1}_{date2}.pickle'
 get_newsapi_articles(fle_nme, date1, date2)

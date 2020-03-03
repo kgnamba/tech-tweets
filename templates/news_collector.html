@@ -34,6 +34,10 @@
         .dropdown-toggle {
             margin-bottom: 10px;
         }
+        .get-questions {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
         .blockquote-footer {
             margin-top: 0px;
             margin-bottom: 15px;
@@ -68,6 +72,8 @@
                             </div>
 
                             <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            <button class='btn btn-sm btn-primary get-questions'>Pose questions</button>
+                            <div class='posed-questions'></div> 
                         </div>
                     </div>
 
@@ -80,6 +86,13 @@
                             <nav aria-label="breadcrumb">
                               <ol class="breadcrumb"></ol>
                             </nav>
+
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control keywords-input" placeholder="e.g. hurricane risk">
+                              <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">keywords</span>
+                              </div>
+                            </div>
 
                             <div class='panel types'>
                                 <p class="lead">Writing the hook</p>
@@ -102,7 +115,7 @@
 
                             <div class='panel newsapi-goog'>
                                 <p class='lead'>News headlines can be good model hooks</p>
-                                <p class='get-goog-help'><a href="#">See news headlines related to your first tweet</a></p>
+                                <p class='get-goog-help'><a href="#">See google news headlines related to your <i>keywords</i></a></p>
                                 <h6 class="goog-query-text"></h6>
                                 <br />
                                 <div class="spinner-border" role="status">
@@ -113,9 +126,9 @@
 
 
                             <div class='panel tweets'>
-                                <button class='btn btn-sm btn-primary auth'>authenticate your twitter account</button>
 
-                                <button class='btn btn-sm btn-primary get-tweets'>get related tweets</button>
+                                <p class='lead'>Popular tweets can show you what's timeline</p>
+                                <p class='get-tweets'><a href="#">See tweets with at least 100 likes related to your <i>keywords</i></a></p>
 
                                 <div class='statuses'>
                                     {% for status in statuses %}

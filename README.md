@@ -9,3 +9,10 @@ Example tweetorials:
 * the relativity of simultaneity https://twitter.com/i/moments/899752815391801346
 * a thread about dung beetles https://twitter.com/i/moments/897362339518926849
 * do butterflies remember being caterpillars? https://twitter.com/i/moments/899757563935432706
+
+
+Requires a virtualenv to run. Python 3.6.8. Use requirements.txt for requirements.
+
+Requires pickled newsapi articles in data directory.
+
+Requires API_KEYS.env file with all the necessary API keys.

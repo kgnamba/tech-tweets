@@ -39,27 +39,41 @@ var panel_tabs = {
 };
 
 
+function get_questions() {
+    console.log('getting questions...');
+    var value = $('.first-tweet-input').val();
+    $('.posed-questions').empty();
+    $.post("/api/get_noun_phrases", {'text': value}, function(resp) {
+        console.log('response:', resp);
+        $.each(resp.questions, function(i, item) {
+            $('.posed-questions').append($('<p>').text(item));
+        })
+    })
+}
+
 $(document).ready(function(){
     $('.spinner-border').hide();
     $('.panel').hide();
 
     $(".get-tweets").click( function() {
         console.log('get-tweets button');
-        var value = $('.first-tweet-input').val();
+        var value = $('.keywords-input').val();
         $('.statuses').empty();
         $.post("/api/get_tweets", {'text': value}, function(resp) {
             console.log("response:", resp);
-            $.each(resp.statuses, function(i, item) {
-                var quote = $("<blockquote/>").addClass('twitter-tweet');
-                var p = $("<p/>");
-                p.text(item.text);
-                quote.append(p);
-                var sim = (item.sim*100).toFixed(0).toString()
-                var str = "&mdash; " + item.user.name + " (@" + item.user.screen_name + ") " + item.created_at + "[" + sim + "% related]";
-                quote.append(str);
-                $('.statuses').append(quote);
-            });
+            if (resp.statuses.length === 0) {
+                $('.statuses').append('No tweets with at least 100 likes found. Only searches the past few days. Try less keywords.')
+            } else {
+                $.each(resp.statuses, function(i, item) {
+                    $('.statuses').append(item.html);
+                });
+            }
+            
         });
+    });
+
+    $(".get-questions").click( function() {
+        get_questions();
     });
 
     $.each(examples, function (i, val) {
@@ -140,7 +154,7 @@ $(document).ready(function(){
 
     $(".get-goog-help").click(function(){
         console.log('get-goog-help');
-        value = $('.first-tweet-input').val();
+        value = $('.keywords-input').val();
         $('.goog-query-text').empty().text('Query: ' + value);
         $('.goognews-results').empty();
         $('.spinner-border').show();

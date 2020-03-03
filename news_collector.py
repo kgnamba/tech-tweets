@@ -11,9 +11,14 @@ from serpapi.google_search_results import GoogleSearchResults
 
 import tweepy
 
+import spacy
+
 from bert_util import sent_emb_from_text
 from scipy.spatial.distance import cosine
 import numpy as np
+
+
+nlp = spacy.load("en_core_web_sm")
 
 
 app = Flask(__name__)
@@ -30,7 +35,8 @@ pkl_fles = [
     'data/newsapi-articles_2020-02-21_2020-02-22.pickle',
     'data/newsapi-articles_2020-02-22_2020-02-23.pickle',
     'data/newsapi-articles_2020-02-23_2020-02-24.pickle',
-    'data/newsapi-articles_2020-02-24_2020-02-25.pickle'
+    'data/newsapi-articles_2020-02-24_2020-02-25.pickle',
+    'data/newsapi-articles_2020-02-25_2020-02-26.pickle'
     ]
 articles = []
 headlines_emb = []
@@ -109,29 +115,31 @@ def hello_world():
 
     return render_template('news_collector.html', statuses=statuses)
 
+
+def get_status_url(status):
+    statid = status['id_str']
+    username = status['user']['screen_name']
+    return f'https://twitter.com/{username}/status/{statid}'
+
 @app.route('/api/get_tweets', methods=['POST'])
 def get_tweets():
     text = request.values.get('text')
 
-    # SEARCHING STORED TIMELINE TWEETS
-    # in_emb = sent_emb_from_text(text, pprint=True)
-    # sims = []
-    # stat_obj, stat_emb = pickle.load(open(tweet_emb_pth, 'rb'))
-    # print(f'searching {len(stat_obj)} tweets') 
-    # for stat in stat_emb:
-    #     sim1 = 1 - cosine(in_emb, stat)
-    #     sims.append(sim1)
-    # indx = np.argsort(sims)[::-1]
-    # # statuses = [stat_obj[i]._json for i in indx[:5]]
-    # statuses = [{**stat_obj[i]._json, **{'sim': sims[i]}} for i in indx[:5]]
-
     api = tweepy.API(tweepyauth)
-    res = api.search(q=text, rpp=5)
+    query = text.replace(' ', '+') + "+min_retweets:100+lang:en"
+    res = api.search(q=query)
 
     remaining = int(api.last_response.headers['x-rate-limit-remaining'])
     print('remaining requests:', remaining)
 
-    statuses = [stat._json for stat in res]
+    statuses = []
+    for stat in res:
+        url = get_status_url(stat._json)
+        oembed = 'https://publish.twitter.com/oembed'
+        r = requests.get(oembed, params={'url': url})
+        html = r.json().get('html')
+        statuses.append({**stat._json, **{'html': html}})
+
     data = {'statuses': statuses}
     resp = Response(json.dumps(data), status=200, mimetype='application/json')
     return resp
@@ -191,6 +199,21 @@ def get_goog_news():
 
     client = GoogleSearchResults(params)
     data = client.get_dict()
+    resp = Response(json.dumps(data), status=200, mimetype='application/json')
+    return resp
+
+@app.route('/api/get_noun_phrases', methods=['POST'])
+def get_noun_phrases():
+    text = request.values.get('text')
+    doc = nlp(text)
+    phrases = []
+    questions = []
+    for chunk in doc.noun_chunks:
+        if len(chunk) == 1 and chunk[0].is_stop:
+            continue
+        phrases.append(chunk.text)
+        questions.append(f'Do you think the reader will know what "{chunk.text}" is?')
+    data = {'nounphrases': phrases, 'questions': questions}
     resp = Response(json.dumps(data), status=200, mimetype='application/json')
     return resp
 
