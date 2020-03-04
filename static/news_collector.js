@@ -12,6 +12,16 @@ var examples = ["What can fossil plankton tell us about the last ice age?",
                 "How to design/build a secure computer?",
                 "people frequently misinterpret the cone of uncertainty for understanding hurricane risk."];
 
+examples = [
+    "how VPNs work",
+    "why we should worry about net neutrality",
+    "what is deep learning",
+    "what are website cookies",
+    "what are turing machines",
+    "why game desig isn't gamification",
+    "why accessible design is important for everyone",
+    "what's an IP addresss"]
+
 var hook_types = {
     'time-peg': {
         'text': 'time peg -  why is this relevant right now?',
@@ -43,7 +53,7 @@ function get_questions() {
     console.log('getting questions...');
     var value = $('.first-tweet-input').val();
     $('.posed-questions').empty();
-    $.post("/api/get_noun_phrases", {'text': value}, function(resp) {
+    $.post("api/get_noun_phrases", {'text': value}, function(resp) {
         console.log('response:', resp);
         $.each(resp.questions, function(i, item) {
             $('.posed-questions').append($('<p>').text(item));
@@ -51,25 +61,74 @@ function get_questions() {
     })
 }
 
+function get_tweets() {
+    console.log('get-tweets button');
+    var value = $('.keywords-input').val();
+    $('.statuses').empty();
+    $.post("api/get_tweets", {'text': value}, function(resp) {
+        console.log("response:", resp);
+        if (resp.statuses.length === 0) {
+            $('.statuses').append('No tweets with at least 100 likes found. Only searches the past few days. Try less keywords.')
+        } else {
+            $.each(resp.statuses, function(i, item) {
+                $('.statuses').append(item.html);
+            });
+        }
+        
+    });
+}
+
+function get_help() {
+    console.log('get-bert-help');
+    value = $('.first-tweet-input').val();
+    $('.query-text').empty().text('Query: ' + value);
+    $('.news-results').empty();
+    $('.spinner-border').show();
+    $.post("api/get_news", {'text': value}, function(resp) {
+        console.log("response:", resp);
+        $('.spinner-border').hide();
+        $.each(resp.articles, function(i, item) {
+            var card = $("<div/>"); //.addClass('card');
+            var art = $("<div/>"); //.addClass('article');
+            art.append($("<p/>").addClass('article').text(item.title));
+            // art.append($("<p/>").addClass('small').text(item.firstsent));
+            art.append($("<footer/>")
+                .addClass('blockquote-footer')
+                .text((item.sim*100).toFixed(0).toString() + "% related, from " + item.source.name + "; " + item.publishedAt));
+            card.append(art);
+            $('.news-results').append(card);
+        });
+    });
+}
+
+function get_goog_help() {
+    console.log('get-goog-help');
+    value = $('.keywords-input').val();
+    $('.goog-query-text').empty().text('Query: ' + value);
+    $('.goognews-results').empty();
+    $('.spinner-border').show();
+    $.post("api/get_goog_news", {'text': value, 'tbs': "qdr:m"}, function(resp) {
+        console.log("response:", resp);
+        $('.spinner-border').hide();
+        $.each(resp.news_results, function(i, item) {
+            var card = $("<div/>"); 
+            var art = $("<div/>"); 
+            art.append($("<p/>").addClass('article').text(item.title));
+            art.append($("<footer/>")
+                .addClass('blockquote-footer')
+                .text("from " + item.source + "; " + item.date));
+            card.append(art);
+            $('.goognews-results').append(card);
+        });
+    });
+}
+
 $(document).ready(function(){
     $('.spinner-border').hide();
     $('.panel').hide();
 
     $(".get-tweets").click( function() {
-        console.log('get-tweets button');
-        var value = $('.keywords-input').val();
-        $('.statuses').empty();
-        $.post("/api/get_tweets", {'text': value}, function(resp) {
-            console.log("response:", resp);
-            if (resp.statuses.length === 0) {
-                $('.statuses').append('No tweets with at least 100 likes found. Only searches the past few days. Try less keywords.')
-            } else {
-                $.each(resp.statuses, function(i, item) {
-                    $('.statuses').append(item.html);
-                });
-            }
-            
-        });
+        get_tweets();
     });
 
     $(".get-questions").click( function() {
@@ -88,7 +147,7 @@ $(document).ready(function(){
     $(".dropdown-item").click(function() {
         var id = $(this).attr('id');
         var text = examples[id];
-        $('.first-tweet-input').val(text);
+        $('.example-principle').val(text);
     });
 
     $.each(hook_types, function(key, val) {
@@ -122,56 +181,12 @@ $(document).ready(function(){
         $('.breadcrumb').append(item);
     });
 
-    $('.auth').click( function() {
-        $.post('auth', function(resp) {
-            console.log('auth resp:', resp);
-            var w = window.location = resp;
-        });
-    });
-
     $(".get-help").click(function(){
-        console.log('get-bert-help');
-        value = $('.first-tweet-input').val();
-        $('.query-text').empty().text('Query: ' + value);
-        $('.news-results').empty();
-        $('.spinner-border').show();
-        $.post("/api/get_news", {'text': value}, function(resp) {
-            console.log("response:", resp);
-            $('.spinner-border').hide();
-            $.each(resp.articles, function(i, item) {
-                var card = $("<div/>"); //.addClass('card');
-                var art = $("<div/>"); //.addClass('article');
-                art.append($("<p/>").addClass('article').text(item.title));
-                // art.append($("<p/>").addClass('small').text(item.firstsent));
-                art.append($("<footer/>")
-                    .addClass('blockquote-footer')
-                    .text((item.sim*100).toFixed(0).toString() + "% related, from " + item.source.name + "; " + item.publishedAt));
-                card.append(art);
-                $('.news-results').append(card);
-            });
-        });
+        get_help();
     });
 
     $(".get-goog-help").click(function(){
-        console.log('get-goog-help');
-        value = $('.keywords-input').val();
-        $('.goog-query-text').empty().text('Query: ' + value);
-        $('.goognews-results').empty();
-        $('.spinner-border').show();
-        $.post("/api/get_goog_news", {'text': value, 'tbs': "qdr:m"}, function(resp) {
-            console.log("response:", resp);
-            $('.spinner-border').hide();
-            $.each(resp.news_results, function(i, item) {
-                var card = $("<div/>"); 
-                var art = $("<div/>"); 
-                art.append($("<p/>").addClass('article').text(item.title));
-                art.append($("<footer/>")
-                    .addClass('blockquote-footer')
-                    .text("from " + item.source + "; " + item.date));
-                card.append(art);
-                $('.goognews-results').append(card);
-            });
-        });
+        get_goog_help();
     });
 
 });

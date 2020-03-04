@@ -16,3 +16,5 @@ Requires a virtualenv to run. Python 3.6.8. Use requirements.txt for requirement
 Requires pickled newsapi articles in data directory.
 
 Requires API_KEYS.env file with all the necessary API keys.
+
+Also may need to download the spacy language model.

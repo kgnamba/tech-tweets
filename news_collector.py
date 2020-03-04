@@ -1,4 +1,5 @@
 import json
+import os
 import pickle
 import requests
 import sys
@@ -25,96 +26,39 @@ app = Flask(__name__)
 CORS(app)
 
 
+
 # pickled files should be list: [list articles, list headline embeddings]
-pkl_fles = ['data/abc-headlines.pickle', 'data/newsapi-articles.pickle']
-pkl_fles = [
-    'data/newsapi-articles_2020-02-05_2020-02-10.pickle', 
-    'data/newsapi-articles_2020-02-10_2020-02-15.pickle',
-    'data/newsapi-articles_2020-02-15_2020-02-20.pickle',
-    'data/newsapi-articles_2020-02-20_2020-02-21.pickle',
-    'data/newsapi-articles_2020-02-21_2020-02-22.pickle',
-    'data/newsapi-articles_2020-02-22_2020-02-23.pickle',
-    'data/newsapi-articles_2020-02-23_2020-02-24.pickle',
-    'data/newsapi-articles_2020-02-24_2020-02-25.pickle',
-    'data/newsapi-articles_2020-02-25_2020-02-26.pickle'
-    ]
+pkl_fles = []
+for filename in os.listdir('data'):
+    if filename[:17] == 'newsapi-articles_':
+        pkl_fles.append(f'data/{filename}')
+pkl_fles_recent = sorted(pkl_fles, reverse=True)[:10]
+
 articles = []
 headlines_emb = []
-for fle in pkl_fles:
+for fle in pkl_fles_recent:
     print('loading news articles from', fle)
     these_articles, these_emb = pickle.load(open(fle, 'rb'))
     articles += these_articles
     headlines_emb += these_emb
-print('len(articles)', len(articles))
-print('len(headlines_emb):', len(headlines_emb))
+print('len(articles):', len(articles))
 
 twitter_keys = {'oauth_token': '', 'oauth_token_secret': ''}
 api_keys = {}
 with open('API_KEYS.env', 'r') as fle:
     for line in fle:
-        key = line.strip().split('=')[0]
-        val = line.strip().split('=')[1]
+        key, val = line.strip().split('=')
         if key.split('_')[0] == 'twitter':
             twitter_keys[key[8:]] = val
         else:
             api_keys[key] = val
-print('twitter keys', twitter_keys)
-print('api_keys', api_keys)
 
 tweepyauth = tweepy.OAuthHandler(twitter_keys['consumer_key'], twitter_keys['consumer_secret'])
 
-tweet_emb_pth = 'data/tweet_emb.pickle'
 
 @app.route('/')
 def hello_world():
-    
-    statuses = []
-    loggedin = False
-    refresh = False
-    if 'request_token' in twitter_keys:
-        del twitter_keys['request_token']
-        verifier = request.args.get('oauth_verifier')
-        tweepyauth.get_access_token(verifier)
-        twitter_keys['token'] = (tweepyauth.access_token, tweepyauth.access_token_secret)
-        print(twitter_keys)
-        api = tweepy.API(tweepyauth)
-
-        loggedin = True
-
-    elif 'token' in twitter_keys:
-        tweepyauth.set_access_token(twitter_keys['token'][0], twitter_keys['token'][1])
-        api = tweepy.API(tweepyauth)
-        loggedin = True
-
-    if loggedin and refresh:
-        stat_emb = []
-        stat_obj = []
-        print('querying user home_timeline')
-        cursor = tweepy.Cursor(api.home_timeline, tweet_mode='extended').items()
-        count = 0
-        
-        while count < 250:
-            count += 1
-            try:
-                status = cursor.next()
-                stat_obj.append(status)
-                stat_emb.append(sent_emb_from_text(status.full_text))
-            except tweepy.error.TweepError:
-                print('ERROR: failed to request tweets, rate limit hit')
-                break
-
-        print(f'pickling {len(stat_obj)} tweets')
-        with open(tweet_emb_pth, 'wb') as pkl:
-            pickle.dump([stat_obj, stat_emb], pkl)
-        statuses = stat_obj[:5]
-
-        remaining = int(api.last_response.headers['x-rate-limit-remaining'])
-        print('remaining requests:', remaining)
-
-    print(f'sending {len(statuses)} statuses')
-
-    return render_template('news_collector.html', statuses=statuses)
-
+    return render_template('news_collector.html')
 
 def get_status_url(status):
     statid = status['id_str']
@@ -217,18 +161,7 @@ def get_noun_phrases():
     resp = Response(json.dumps(data), status=200, mimetype='application/json')
     return resp
 
-@app.route('/auth', methods=['GET', 'POST'])
-def auth():
-
-    try:
-        redirect_url = tweepyauth.get_authorization_url()
-        twitter_keys['request_token'] = tweepyauth.request_token
-        print('request_token', tweepyauth.request_token)
-        print('redirect_url', redirect_url)
-        return redirect_url
-    except tweepy.TweepError:
-        print('Error! Failed to get request token.')
-
 
 if __name__ == "__main__":
+
     app.run(debug=True, port=8888)

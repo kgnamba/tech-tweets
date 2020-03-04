@@ -1,5 +1,6 @@
 import json
 import pickle
+import sys
 
 from newsapi import NewsApiClient
 
@@ -100,8 +101,13 @@ def get_abc_headlines(pkl_fle_nme):
     with open(pkl_fle_nme, 'wb') as pkl:
         pickle.dump([articles, headlines_emb], pkl)
 
+if __name__ == "__main__":
+    date1 = input("Please input start date in form YYYY-MM-DD: ")
+    date2 = input("Please input end date in form YYYY-MM-DD: ")
+    confirm = input(f"Please confirm dates {date1} and {date2} [y/n]: ")
+    
+    if confirm != "y":
+        sys.exit()
 
-date1 = '2020-02-26'
-date2 = '2020-02-27'
-fle_nme = f'data/newsapi-articles_{date1}_{date2}.pickle'
-get_newsapi_articles(fle_nme, date1, date2)
+    fle_nme = f'data/newsapi-articles_{date1}_{date2}.pickle'
+    get_newsapi_articles(fle_nme, date1, date2)
