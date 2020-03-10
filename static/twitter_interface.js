@@ -2,12 +2,12 @@ $(document).ready(function(){
     console.log("loaded");
 
     $("#post_text").click(function() {
-        console.log("this works");
+        console.log("this works in twitter_interface");
         $("#post_text").val() = '';
     });
 
     $("#twitter_btn").click(function(){
-        console.log("Called");
+        console.log("Called from twitter_interface");
     });
 
 
