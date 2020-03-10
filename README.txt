@@ -26,3 +26,6 @@ Bunch of twitter authentication functions that seem to be unconnected to server.
 
 twitter.js
 Javascript functions for twitter_interface, posting twitter methods
+
+fragments.py
+Holds fragments of code that may be useful later.
