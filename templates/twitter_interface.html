@@ -18,6 +18,9 @@
             var user_id= {{user_id|tojson}};
             var screen_name= {{screen_name|tojson}};
             var tweets= JSON.stringify(tweets);
+            if (document.getElementById("#screen_name") == "Demo_User"){
+            document.getElementById("#post_btn").disabled = true;
+            }
         </script>
     </head>
     <style>
@@ -141,6 +144,11 @@
             text-decoration: none;
         }
 
+        /* .btn_disable{
+            background-color: gray;
+            color: black;
+        } */
+
         .btn_hover{
             background-color:#84bbf3;
             color:#ffffff;
@@ -229,7 +237,7 @@
                                 <input type="file" id="my_file" style="display: none;" />
                             <div id="word_count"> 280 </div>
                             <a href="#" class="tweet_btn" id="add_btn" >Add Tweet</a>
-                            <a href="#" class="tweet_btn " id="post_btn" >Post Tweet</a>
+                            <a href="#" class="tweet_btn " id="post_btn" >Post Thread</a>
                         </div>
                     </div> 
                     <div id="tweets"></div>   
