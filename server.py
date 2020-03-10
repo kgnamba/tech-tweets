@@ -1,12 +1,8 @@
 from data import profile_img, status, tweets
-from flask import Flask
 from flask import render_template
 from flask import Flask, Response, request, jsonify, json, redirect, session 
 from requests_oauthlib import OAuth1, OAuth1Session
 from urllib.parse import urlparse
-import requests
-import post
-import twitter
 import os
 from dotenv import load_dotenv
 import requests
@@ -40,106 +36,65 @@ def home(name=None):
     return render_template('home.html')
 
 @app.route('/twitter_interface', methods=['GET', 'POST'])
-# Setting up twitter_interface, gets user info
+# Setting up twitter_interface page and gets user info
 def twitter_interface(name=None):
     global a_token
     global a_token_secret
     global screen_name
     global user_id
 
-    token = request.args.get('oauth_token')
-    verifier = request.args.get("oauth_verifier")
+    token = request.args.get('oauth_token') # Client Information
+    verifier = request.args.get("oauth_verifier") # Authorization permission from client
 
-    # In this step we also use the verifier
+
     twitter = OAuth1(key, client_secret=secret, resource_owner_key=token,
-            verifier=verifier)
-    r = requests.post(access_url, auth=twitter)
-
-    # This is the end of Step 3, we can now extract resource owner key & secret
-    # as well as some extra information such as screen name.
+            verifier=verifier) # Obtains access token 
+    r = requests.post(access_url, auth=twitter) # Oauth access token key and secret and client profile info
 
     info = r.text
-    print(info)
-    try:
+    # print(info)
+    try: 
+        # Parse through data to get access token in usable form
         info_data = str.split(info, '&')
         a_token = str.split(info_data[0], '=')[1]
         a_token_secret = str.split(info_data[1], '=')[1]
         user_id = str.split(info_data[2], '=')[1]
         screen_name = str.split(info_data[3], '=')[1]
 
-        print("recieved relevant informaiton")
-        print(user_id)
-        print(screen_name)
+        # print("recieved relevant informaiton")
+        # print(user_id)
+        # print(screen_name)
 
         return (render_template('twitter_interface.html', profile_img=profile_img, a_token=a_token, a_token_secret=a_token_secret,user_id=user_id, screen_name=screen_name))
     
-    except:
+    except: # returns home page if user doesn't authorize app
         return render_template('home.html') 
+
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account(name=None):
+    screen_name = "Demo_User"
+    user_id = None
+    a_token = None
+    a_token_secret = None
+    return (render_template('twitter_interface.html', profile_img=profile_img, a_token=a_token, a_token_secret=a_token_secret,user_id=user_id, screen_name=screen_name))
 
 @app.route('/auth', methods=['GET', 'POST'])
 def auth():
-    # This uses consumer_key and secret to get request from API
+    # Gets access request token, which is also the client identifier
     request_token = OAuth1Session(client_key=key, client_secret=secret)
-    url = 'https://api.twitter.com/oauth/request_token'
+
+    url = 'https://api.twitter.com/oauth/request_token' # redirection url for client to authorize app
+
     data = request_token.get(url)
     data_token = str.split(data.text, '&')
     ro_key = str.split(data_token[0], '=')
     ro_secret = str.split(data_token[1], '=')
     oauth_token= ro_key[1]
     oauth_token_secret = ro_secret[1]
-    #print(oauth_token_secret)
-    # Create the redirection url and send the user to twitter to give app permissions
-    auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token)
+
+    # Create a URL with client permissions
+    auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token) # callback URL
     return auth
-
-@app.route('/create_account', methods=['GET', 'POST'])
-def create_account():
-    return (render_template('twitter_interface.html'))
-
-@app.route("/callback", methods=["GET", "POST"])
-def callback():
-    global a_token
-    global a_token_secret
-    global screen_name
-    global user_id
-
-    token = request.args.get('oauth_token')
-    verifier = request.args.get("oauth_verifier")
-
-    # In this step we also use the verifier
-    twitter = OAuth1(key, client_secret=secret, resource_owner_key=token,
-            verifier=verifier)
-    r = requests.post(access_url, auth=twitter)
-
-    # This is the end of Step 3, we can now extract resource owner key & secret
-    # as well as some extra information such as screen name.
-
-    info = r.text
-
-    info_data = str.split(info, '&')
-    a_token = str.split(info_data[0], '=')[1]
-    a_token_secret = str.split(info_data[1], '=')[1]
-    user_id = str.split(info_data[2], '=')[1]
-    screen_name = str.split(info_data[3], '=')[1]
-
-    # Show a very basic status update form
-    print("a_token: ", a_token)
-    print("screenid: ", screen_name)
-    
-    return ""
-
-@app.route("/add_tweet", methods=["GET", "POST"])
-def add_tweet():
-    global tweets
-
-    json_data = request.get_json()
-    new_tweet = json_data["message"]
-
-    tweets.append(new_tweet)
-
-    print(tweets)
-    
-    return {'tweets': tweets}
 
 @app.route("/post", methods=["POST"])
 def post_func():
@@ -153,31 +108,10 @@ def post_func():
     
     thread_api = TwitterAPI(**thread_keys)
 
-    print(tweets)
+    # print(tweets)
     th = Threader(tweets, thread_api, wait=1)
     th.send_tweets()
     tweets = []
-
-    # print("Got message to post")
-    # json_data = request.get_json()
-    # status = json_data["message"]
-
-    # # authentication of consumer key and secret 
-    # auth = tweepy.OAuthHandler(key, secret) 
-
-    # # authentication of access token and secret 
-    # auth.set_access_token(a_token, a_token_secret) 
-    # api = tweepy.API(auth) 
-
-    # try:
-    #     api.verify_credentials()
-    #     print("Authentication OK")
-    # except:
-    #     print("Error during authentication")
-    
-    # # update the status 
-    # api.update_status(status) 
-    # print("Posted status to Twitter!")
 
     return {'screen_name': screen_name}
 
