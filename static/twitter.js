@@ -1,4 +1,5 @@
 var generate_modal = function(modal_text){
+  // Creates the Area to see tweet thread
   $(".modal-header").empty();
   $(".modal-header").append('<div class="modal-text">' + modal_text + '</div>');
   $(".modal-header").append('<button type="button" class="close" data-dismiss="modal">&times;</button>');
@@ -16,6 +17,14 @@ var wordCount = function(){
     $("#word_count").html(280 - parseInt(input)).css('color','#A9A9A9');
     $("#post_btn").prop("disabled",false);
   }
+}
+
+var tweets_array = []
+
+var addTweet = function(message) {
+  tweets_array.push(message)
+  createNewTweet(message)
+  console.log(tweets_array)
 }
 
 var updateTweets = function(tweets){
@@ -50,30 +59,15 @@ $(document).on('change', '#post_text', function() {
   wordCount();
 });
 
-var addTweet = function(message){
-  $.ajax({
-        type: "POST", url: "add_tweet", dataType : "json", contentType: "application/json; charset=utf-8",
-    data : JSON.stringify({'message': message}),
-        success: function(result){
-          updateTweets(result['tweets'])
-        },
-        error: function(request, status, error){
-            console.log("Error");
-            console.log(request)
-            console.log(status)
-            console.log(error)
-        }
-    });
-}
-
 var post = function(message){
   $.ajax({
         type: "POST", url: "post", dataType : "json", contentType: "application/json; charset=utf-8",
-    data : JSON.stringify({'message': message}),
+        data : tweets_array, // send to server and post to twitter
         success: function(result){
           id = result['screen_name'];
           url = 'https://twitter.com/#!/' + id;
           window.open(url);
+          console.log(message)
         },
         error: function(request, status, error){
             console.log("Error");
@@ -85,22 +79,22 @@ var post = function(message){
     });
 }
 
-var run_auth = function(){
-  $.ajax({
-    type: "POST", url: "auth", 
-    success: function(result){
-        console.log(result);
-        var w = window.open(result, "popupWindow", "width=600,height=600,scrollbars=yes");
-        $(w.document).find('html').addClass('popup')
-    },
-    error: function(request, status, error){
-        console.log("Error");
-        console.log(request)
-        console.log(status)
-        console.log(error)
-    }
-  });
-}
+// var run_auth = function(){
+//   $.ajax({
+//     type: "POST", url: "auth", 
+//     success: function(result){
+//         console.log(result);
+//         var w = window.open(result, "popupWindow", "width=600,height=600,scrollbars=yes");
+//         $(w.document).find('html').addClass('popup')
+//     },
+//     error: function(request, status, error){
+//         console.log("Error");
+//         console.log(request)
+//         console.log(status)
+//         console.log(error)
+//     }
+//   });
+// }
 
 
 $(document).mousemove(function(event){
@@ -109,6 +103,7 @@ $(document).mousemove(function(event){
 });
 
 $(document).ready(function(){
+  
 
     updateTweets(tweets)
 
@@ -141,10 +136,16 @@ $(document).ready(function(){
       if (message.length > 0) { 
         // this condition is so that no extra tweet posted if 
         // user has textbox selected
+        //createNewTweet(message)
         addTweet(message)
       }
       post(message)
       $("#post_text").val('');
+      var container = document.getElementById("#tweets");
+      var content = container.innerHTML;
+      container.innerHTML = content;
+      console.log("why does it take time to reload");
+      // updateTweets(tweets);
       wordCount();
     });
 
