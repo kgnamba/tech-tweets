@@ -4,6 +4,7 @@ from flask import Flask, Response, request, jsonify, json, redirect, session
 from requests_oauthlib import OAuth1, OAuth1Session
 from urllib.parse import urlparse
 import os
+import post # this is necessary to run run_auth()
 from dotenv import load_dotenv
 import requests
 import tweepy
@@ -70,6 +71,38 @@ def twitter_interface(name=None):
     except: # returns home page if user doesn't authorize app
         return render_template('home.html') 
 
+
+@app.route("/callback", methods=["GET", "POST"])
+def callback():
+    global a_token
+    global a_token_secret
+    global screen_name
+    global user_id
+
+    token = request.args.get('oauth_token')
+    verifier = request.args.get("oauth_verifier")
+
+    # In this step we also use the verifier
+    twitter = OAuth1(key, client_secret=secret, resource_owner_key=token,
+                     verifier=verifier)
+    r = requests.post(access_url, auth=twitter)
+
+    # This is the end of Step 3, we can now extract resource owner key & secret
+    # as well as some extra information such as screen name.
+
+    info = r.text
+
+    info_data = str.split(info, '&')
+    a_token = str.split(info_data[0], '=')[1]
+    a_token_secret = str.split(info_data[1], '=')[1]
+    user_id = str.split(info_data[2], '=')[1]
+    screen_name = str.split(info_data[3], '=')[1]
+
+    # Show a very basic status update form
+    print("a_token: ", a_token)
+    print("screenid: ", screen_name)
+
+    return ""
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account(name=None):
     screen_name = "Demo_User"
@@ -96,10 +129,11 @@ def auth():
     auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token) # callback URL
     return auth
 
-@app.route("/post", methods=["POST"])
+@app.route("/post", methods=["GET", "POST"])
 def post_func():
 
-    global tweets
+    json_data = request.get_json() # Get tweets from twitter.js
+    tweets_array = json_data["tweets"]
     
     thread_keys = dict(consumer_key=key,
             consumer_secret=secret,
@@ -108,10 +142,8 @@ def post_func():
     
     thread_api = TwitterAPI(**thread_keys)
 
-    # print(tweets)
-    th = Threader(tweets, thread_api, wait=1)
+    th = Threader(tweets_array, thread_api, wait=1)
     th.send_tweets()
-    tweets = []
 
     return {'screen_name': screen_name}
 

@@ -27,11 +27,16 @@ var addTweet = function(message) {
   console.log(tweets_array)
 }
 
+// var deleteTweet = function() {
+
+// }
+
 var updateTweets = function(tweets){
   $("#tweets").empty()
   console.log("Within update Tweets")
   $.each(tweets, function( index, value ){
     createNewTweet(value);
+    $("#tweets").prepend(checkBox)
   });
 }
 
@@ -59,43 +64,26 @@ $(document).on('change', '#post_text', function() {
   wordCount();
 });
 
-var post = function(message){
+var post = function(tweets){
   $.ajax({
         type: "POST", url: "post", dataType : "json", contentType: "application/json; charset=utf-8",
-        data : tweets_array, // send to server and post to twitter
+        data : JSON.stringify({'tweets': tweets}), // send to server and post to twitter
         success: function(result){
           id = result['screen_name'];
           url = 'https://twitter.com/#!/' + id;
           window.open(url);
-          console.log(message)
         },
         error: function(request, status, error){
             console.log("Error");
             console.log(request)
             console.log(status)
             console.log(error)
+            console.log(tweets)
+            console.log(tweets_array)
             generate_modal("Error sending Tweet")
         }
     });
 }
-
-// var run_auth = function(){
-//   $.ajax({
-//     type: "POST", url: "auth", 
-//     success: function(result){
-//         console.log(result);
-//         var w = window.open(result, "popupWindow", "width=600,height=600,scrollbars=yes");
-//         $(w.document).find('html').addClass('popup')
-//     },
-//     error: function(request, status, error){
-//         console.log("Error");
-//         console.log(request)
-//         console.log(status)
-//         console.log(error)
-//     }
-//   });
-// }
-
 
 $(document).mousemove(function(event){
   //console.log("Window reference");
@@ -136,16 +124,11 @@ $(document).ready(function(){
       if (message.length > 0) { 
         // this condition is so that no extra tweet posted if 
         // user has textbox selected
-        //createNewTweet(message)
         addTweet(message)
       }
-      post(message)
+      post(tweets_array)
       $("#post_text").val('');
-      var container = document.getElementById("#tweets");
-      var content = container.innerHTML;
-      container.innerHTML = content;
-      console.log("why does it take time to reload");
-      // updateTweets(tweets);
+      updateTweets(tweets);
       wordCount();
     });
 
