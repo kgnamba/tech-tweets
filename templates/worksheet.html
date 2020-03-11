@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- bootstrap --> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+        <!-- Jquery--> 
+        <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+        <!-- embedded tweet formatter -->
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        <!-- flask javascript -->
+        <script type="text/Javascript" src="{{url_for('static', filename='news_collector.js')}}"></script>
+    </head>
+
+    <style>
+        #heading{
+            color: #111; 
+            font-family: 'Helvetica Neue', sans-serif; 
+            font-size: 40px; 
+            font-weight: lighter; letter-spacing: 3px; line-height: 1; text-align: center; 
+            padding-top: 100px;
+            padding-bottom: 20px;
+            }
+        .card {
+            margin-top: 20px;
+        }
+        .dropdown-toggle {
+            margin-bottom: 10px;
+        }
+        .get-questions {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .blockquote-footer {
+            margin-top: 0px;
+            margin-bottom: 15px;
+        }
+        .article {
+            margin-bottom: 0px;
+        }
+    </style>
+    
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 first-tweet"> 
+
+                    <div id="heading">Draft Your Tweetorial</div>
+                    
+                    
+
+                    
+                    
+
+                    <div class="card alert alert-primary">
+                        <div class="card-body">
+                            <!-- <h5 class="card-title">Write the first tweet</h5> -->
+                            
+
+                            <p class="lead">Write down the principle you want to explain.</p>
+                            <p>It can be useful to write a question and then answer it. For example, 'What is a turing machine? A turing machine is...'. Don't worry about clarity here, just get down your ideas.</p>
+
+                            <textarea class="form-control example-principle"></textarea>
+
+                            <div class="dropdown">
+                              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Example principles
+                              </button>
+                              <div class="dropdown-menu small" aria-labelledby="dropdownMenuButton">
+                              </div>
+                            </div>
+
+                            <br />
+                            <p class="lead">Write down three concrete situations or examples related to your principle.</p>
+                            <p>Try answering these prompts:
+                                <ol>
+                                    <li>What made you learn about this or why do you want to explain this?</li>
+                                    <li>Is there a strong example that illustrates your principle?</li>
+                                    <li>When might people unwittingly deal with this principle in their life?</li>
+                                </ol>
+                            </p>
+                            <textarea class="form-control three-situations"></textarea>
+
+                            
+                            <br />
+                            <p class="lead">Rewrite or two from above to make it more interesting.</p>
+                            <p>For each situation or example, think about the following:
+                                <ul>
+                                    <li>Will a reader understand everything you mention?</li>
+                                    <li>Can you make anything more specific and grounded?</li>
+                                    <li>Does this relate to something timely or relevant to the reader?</li>
+                                </ul>
+                            </p>
+                            <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            <!-- <button class='btn btn-sm btn-primary get-questions'>Pose questions</button> -->
+                            <div class='posed-questions'></div> 
+
+
+                            <!-- <br />
+                            <p class="lead">Frame each situation as a question that would intrigue the reader.</p>
+                            <p>The idea is that your explanation will answer this question. For example, the answer to 'why can't your computer know that it has crashed?' will include an explanation of turing machines.</p>
+                            <textarea class="form-control situation-as-question"></textarea> -->
+
+
+                            <br />
+                            <p class="lead">Pick one and turn it into your first tweet.</p>
+                            <p>This will entice people to read further! Common techniques for the first tweet include:
+                                <ul>
+                                    <li>relating it to a recent or emotional situation</li>
+                                    <li>correcting a common misconception</li>
+                                    <li>creating a sense of wonder or surprise</li>
+                                </ul>
+                            </p>
+                            <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        
+
+    </body>
+</html>
