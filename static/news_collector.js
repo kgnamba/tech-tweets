@@ -18,7 +18,7 @@ examples = [
     "what is deep learning",
     "what are website cookies",
     "what are turing machines",
-    "why game desig isn't gamification",
+    "why game design isn't gamification",
     "why accessible design is important for everyone",
     "what's an IP addresss"]
 

@@ -18,3 +18,5 @@ Requires pickled newsapi articles in data directory.
 Requires API_KEYS.env file with all the necessary API keys.
 
 Also may need to download the spacy language model.
+
+When running it on the server, remember to change debug to true and set the host to 0.0.0.0.

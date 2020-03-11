@@ -50,7 +50,8 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 first-tweet"> 
+                <div class="col-md-2"></div>
+                <div class="col-md-8 first-tweet"> 
 
                     <div id="heading">Draft Your Tweetorial</div>
                     
@@ -64,9 +65,10 @@
                             <!-- <h5 class="card-title">Write the first tweet</h5> -->
                             
 
-                            <p class="lead">What principle or idea do you want to explain?</p>
-                            <textarea class="form-control example-principle"></textarea>
+                            <p class="lead">Write down the principle you want to explain.</p>
+                            <p>It can be useful to write a question and then answer it. For example, 'What is a turing machine? A turing machine is...'. Write several sentences!</p>
 
+                            <textarea class="form-control example-principle"></textarea>
 
                             <div class="dropdown">
                               <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -76,18 +78,43 @@
                               </div>
                             </div>
 
-                            
+                            <br />
+                            <p class="lead">Write down three situations or concrete examples related to your principle.</p>
+                            <p>For example, 'determining whether an algorithm can be solved' or 'the popularity of candy crush'. </p>
+                            <textarea class="form-control three-situations"></textarea>
 
-                            <p class="lead">What's a problem, mystery, or interesting phenomena that your principle explains?</p>
+                            
+                            <br />
+                            <p class="lead">Refine these situations: can you make them more specific? can you make them important to the reader?</p>
+                            <p>A reader might not know what 'GPT-2' is. Instead, talk about online bots that automatically generate text.</p>
                             <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
                             <button class='btn btn-sm btn-primary get-questions'>Pose questions</button>
                             <div class='posed-questions'></div> 
+
+
+                            <!-- <br />
+                            <p class="lead">Frame each situation as a question that would intrigue the reader.</p>
+                            <p>The idea is that your explanation will answer this question. For example, the answer to 'why can't your computer know that it has crashed?' will include an explanation of turing machines.</p>
+                            <textarea class="form-control situation-as-question"></textarea> -->
+
+
+                            <br />
+                            <p class="lead">Pick one situation from above and up the stakes.</p>
+                            <p>This will be your first tweet. You can make this tweet more engaging by:
+                                <ul>
+                                    <li>relating it to a recent or emotional situation</li>
+                                    <li>correcting a common misconception</li>
+                                    <li>creating a sense of wonder or surprise</li>
+                                </ul>
+                            </p>
+                            <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            
                         </div>
                     </div>
 
                 </div>
                 <div class="col-md-6 news">
-                    <div id="heading">Support</div>
+                    <!-- <div id="heading">Support</div>
 
                     <div class="card">
                         <div class="card-body">
@@ -148,12 +175,12 @@
                                         </blockquote>
                                     {% endfor %}
                                 </div>
-                            </div>
+                            </div> -->
                             
-
+<!-- 
                         </div>
                     </div>
-
+ -->
 
                     
                 </div>

@@ -20,8 +20,8 @@ app = Flask(__name__)
 CORS(app)
 
 # This information is obtained upon registration of a new client on twitter
-key = ''
-secret = ''
+key = 'G3WTD5N5Hvb75c3b810q04U08'
+secret = 'IMaBHKM3EDtqsfqKBtUdgpX1lUknm9biKR6rd4524E9tS2pSHP'
 oauth_token = ''
 oauth_token_secret = ''
 a_token = ''
@@ -76,6 +76,8 @@ def auth():
     request_token = OAuth1Session(client_key=key, client_secret=secret)
     url = 'https://api.twitter.com/oauth/request_token'
     data = request_token.get(url)
+    print('key', key)
+    print('secret', secret)
     data_token = str.split(data.text, '&')
     ro_key = str.split(data_token[0], '=')
     ro_secret = str.split(data_token[1], '=')
