@@ -72,37 +72,6 @@ def twitter_interface(name=None):
         return render_template('home.html') 
 
 
-@app.route("/callback", methods=["GET", "POST"])
-def callback():
-    global a_token
-    global a_token_secret
-    global screen_name
-    global user_id
-
-    token = request.args.get('oauth_token')
-    verifier = request.args.get("oauth_verifier")
-
-    # In this step we also use the verifier
-    twitter = OAuth1(key, client_secret=secret, resource_owner_key=token,
-                     verifier=verifier)
-    r = requests.post(access_url, auth=twitter)
-
-    # This is the end of Step 3, we can now extract resource owner key & secret
-    # as well as some extra information such as screen name.
-
-    info = r.text
-
-    info_data = str.split(info, '&')
-    a_token = str.split(info_data[0], '=')[1]
-    a_token_secret = str.split(info_data[1], '=')[1]
-    user_id = str.split(info_data[2], '=')[1]
-    screen_name = str.split(info_data[3], '=')[1]
-
-    # Show a very basic status update form
-    print("a_token: ", a_token)
-    print("screenid: ", screen_name)
-
-    return ""
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account(name=None):
     screen_name = "Demo_User"
