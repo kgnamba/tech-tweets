@@ -16,7 +16,21 @@
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
         <!-- flask javascript -->
-        <script type="text/Javascript" src="{{url_for('static', filename='news_collector.js')}}"></script>
+        <script type="text/Javascript">
+            $(document).ready(function(){
+                $('.export-button').click( function() {
+                    var prompts = ['prompt1', 'prompt2', 'prompt3', 'prompt4'];
+                    var alert_text = ''
+                    $.each(prompts, function(i, str) {
+                        alert_text = alert_text + str.toUpperCase() + ':\n'
+                            + $('#'+str).text() + '\n'
+                            + str.toUpperCase() + ' RESPONSE:\n'
+                            + $('#'+str+'-text').val() + '\n\n';
+                    });
+                    alert(alert_text);
+                })
+            });
+        </script>
     </head>
 
     <style>
@@ -64,11 +78,12 @@
                         <div class="card-body">
                             <!-- <h5 class="card-title">Write the first tweet</h5> -->
                             
+                            <div id='prompt1'>
+                                <p class="lead">Write down the principle you want to explain.</p>
+                                <p>It can be useful to write a question and then answer it. For example, 'What is a turing machine? A turing machine is...'. Don't worry about clarity or great writing, just get down your ideas.</p>
+                            </div>
 
-                            <p class="lead">Write down the principle you want to explain.</p>
-                            <p>It can be useful to write a question and then answer it. For example, 'What is a turing machine? A turing machine is...'. Don't worry about clarity or great writing, just get down your ideas.</p>
-
-                            <textarea class="form-control example-principle"></textarea>
+                            <textarea id='prompt1-text' class="form-control example-principle"></textarea>
 
                             <div class="dropdown">
                               <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,42 +94,45 @@
                             </div>
 
                             <br />
-                            <p class="lead">Write down three concrete situations or examples related to your principle.</p>
-                            <p>Try answering these prompts:
-                                <ol>
-                                    <li>Are there examples that illustrate your principle?</li>
-                                    <li>What made you learn about this or why do you want to explain this?</li>
-                                    <li>When might people (perhaps unknowingly) deal with this principle in their life?</li>
-                                </ol>
-                            </p>
-                            <textarea class="form-control three-situations"></textarea>
+                            <div id='prompt2'>
+                                <p class="lead">Write down three concrete situations or examples related to your principle.</p>
+                                <p>Try answering these prompts:
+                                    <ol>
+                                        <li>Are there examples that illustrate your principle?</li>
+                                        <li>What made you learn about this or why do you want to explain this?</li>
+                                        <li>When might people (perhaps unknowingly) deal with this principle in their life?</li>
+                                    </ol>
+                                </p>
+                            </div>
+                            <textarea id='prompt2-text' class="form-control three-situations"></textarea>
 
                             
                             <br />
-                            <p class="lead">Frame each situation as a question that would intrigue the reader.</p>
-                            <p>The idea is that your explanation will answer this question.</p>
-                            <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            <div id='prompt3'>
+                                <p class="lead">Frame each situation as a question that would intrigue the reader.</p>
+                                <p>The idea is that your explanation will answer this question.</p>
+                            </div>
+                            <textarea id='prompt3-text' class="form-control first-tweet-draft first-tweet-input"></textarea>
                             <!-- <button class='btn btn-sm btn-primary get-questions'>Pose questions</button> -->
-                            <div class='posed-questions'></div> 
-
-
-                            <!-- <br />
-                            <p class="lead">Frame each situation as a question that would intrigue the reader.</p>
-                            <p>The idea is that your explanation will answer this question. For example, the answer to 'why can't your computer know that it has crashed?' will include an explanation of turing machines.</p>
-                            <textarea class="form-control situation-as-question"></textarea> -->
+                            <!-- <div class='posed-questions'></div> --> 
 
 
                             <br />
-                            <p class="lead">Pick one question from above and up the stakes.</p>
-                            <p>This will be your first tweet! Common techniques for increasing interest include:
-                                <ul>
-                                    <li>relating it to a recent or emotional situation</li>
-                                    <li>correcting a common misconception</li>
-                                    <li>creating a sense of wonder or surprise</li>
-                                </ul>
-                            </p>
-                            <textarea class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            <div id='prompt4'>
+                                <p class="lead">Pick one question from above and up the stakes.</p>
+                                <p>This will be your first tweet! Common techniques for increasing interest include:
+                                    <ul>
+                                        <li>relating it to a recent or emotional situation</li>
+                                        <li>correcting a common misconception</li>
+                                        <li>creating a sense of wonder or surprise</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <textarea id='prompt4-text' class="form-control first-tweet-draft first-tweet-input"></textarea>
                             
+                            <br />
+                            <button class='btn btn-sm btn-primary export-button'>Export</button>
+
                         </div>
                     </div>
 
