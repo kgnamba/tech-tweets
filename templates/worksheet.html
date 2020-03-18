@@ -17,18 +17,48 @@
 
         <!-- flask javascript -->
         <script type="text/Javascript">
+            examples = [
+                "how VPNs work",
+                "why we should worry about net neutrality",
+                "what is deep learning",
+                "what are website cookies",
+                "what are turing machines",
+                "why game design isn't gamification",
+                "why accessible design is important for everyone",
+                "what's an IP addresss"];
+
             $(document).ready(function(){
+                $.each(examples, function (i, val) {
+                    var text = $("<small/>").text(val);
+                    var ex = $("<a/>")
+                        .addClass('dropdown-item')
+                        .attr('id', i)
+                        .append(text);
+                    $('.dropdown-menu').append(ex);
+                });
+
+                $(".dropdown-item").click(function() {
+                    var id = $(this).attr('id');
+                    var text = examples[id];
+                    $('.example-principle').val(text);
+                });
+
                 $('.export-button').click( function() {
                     var prompts = ['prompt1', 'prompt2', 'prompt3', 'prompt4'];
-                    var alert_text = ''
+                    var alert_text = '';
                     $.each(prompts, function(i, str) {
-                        alert_text = alert_text + str.toUpperCase() + ':\n'
-                            + $('#'+str).text() + '\n'
-                            + str.toUpperCase() + ' RESPONSE:\n'
-                            + $('#'+str+'-text').val() + '\n\n';
+                        alert_text = alert_text + str.toUpperCase() + ':\n' +
+                            $('#'+str).text() + '\n' +
+                            str.toUpperCase() + ' RESPONSE:\n'+
+                            $('#'+str+'-text').val() + '\n\n';
                     });
                     alert(alert_text);
-                })
+                    var name = $('#filename').val();
+                    var data = {'text': alert_text, 'name': name};
+                    $.post('savefile', data, function(resp){
+                        console.log('resp:', resp);
+                    });
+                });
             });
         </script>
     </head>
@@ -131,8 +161,18 @@
                             <textarea id='prompt4-text' class="form-control first-tweet-draft first-tweet-input"></textarea>
                             
                             <br />
-                            <button class='btn btn-sm btn-primary export-button'>Export</button>
+                            <br />
+                            <br />
+                            <p>Save responses on server:</p>
+                            <div class="row">
+                                <div class='col-sm-8'>
 
+                                    <input type="text" class="form-control" id="filename" placeholder="name for file (don't add extension)">
+                                </div>
+                                <div>
+                                    <button class='btn btn-primary export-button'>Export</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
