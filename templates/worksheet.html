@@ -45,18 +45,19 @@
 
                 $('.export-button').click( function() {
                     var prompts = ['prompt1', 'prompt2', 'prompt3', 'prompt4'];
-                    var alert_text = '';
+                    var save_text = '';
                     $.each(prompts, function(i, str) {
-                        alert_text = alert_text + str.toUpperCase() + ':\n' +
+                        save_text = save_text + str.toUpperCase() + ':\n' +
                             $('#'+str).text() + '\n' +
                             str.toUpperCase() + ' RESPONSE:\n'+
                             $('#'+str+'-text').val() + '\n\n';
                     });
-                    alert(alert_text);
                     var name = $('#filename').val();
-                    var data = {'text': alert_text, 'name': name};
+                    var data = {'text': save_text, 'name': name};
                     $.post('savefile', data, function(resp){
                         console.log('resp:', resp);
+                        var alert_text = 'Saved prompts and responses to ' + name + '.txt';
+                        alert(alert_text);
                     });
                 });
             });
@@ -111,10 +112,10 @@
                             <div id='prompt1'>
                                 <p class="lead">Write down the principle you want to explain.</p>
                                 <p>It can be useful to write a question and then answer it. For example, 'What is a turing machine? A turing machine is...'. Don't worry about clarity or great writing, just get down your ideas. </p>
-                                <p>Write at least a few sentences.</p>
+                                <p><i>Write about three sentences in addition to the question.</i></p>
                             </div>
 
-                            <textarea id='prompt1-text' class="form-control example-principle"></textarea>
+                            <textarea id='prompt1-text' class="form-control example-principle" rows="6"></textarea>
 
                             <div class="dropdown">
                               <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -136,16 +137,16 @@
                                 </p>
                                 <p><i>Try to be as specific and concrete as possible.</i>
                             </div>
-                            <textarea id='prompt2-text' class="form-control three-situations"></textarea>
+                            <textarea id='prompt2-text' class="form-control three-situations" rows="6"></textarea>
 
                             
                             <br />
                             <div id='prompt3'>
                                 <p class="lead">Frame each situation as a question that would intrigue the reader.</p>
                                 <p>Each question should use the specifics of your responses above. Think about what your reader already knows about these situations, and what they may want to learn.</p>
-                                <p>(The idea is that your explanation will help answer this question.)</p>
+                                <p><i>The idea is that your explanation will help answer this question.</i></p>
                             </div>
-                            <textarea id='prompt3-text' class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            <textarea id='prompt3-text' class="form-control first-tweet-draft first-tweet-input" rows="6"></textarea>
                             <!-- <button class='btn btn-sm btn-primary get-questions'>Pose questions</button> -->
                             <!-- <div class='posed-questions'></div> --> 
 
@@ -160,8 +161,9 @@
                                         <li>creating a sense of wonder or surprise</li>
                                     </ul>
                                 </p>
+                                <p><i>Imagine actually posting this on Twitter: write like yourself!</i></p>
                             </div>
-                            <textarea id='prompt4-text' class="form-control first-tweet-draft first-tweet-input"></textarea>
+                            <textarea id='prompt4-text' class="form-control first-tweet-draft first-tweet-input" rows="6"></textarea>
                             
                             <br />
                             <br />
