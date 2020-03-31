@@ -19,6 +19,20 @@ var wordCount = function(){
   }
 }
 
+var wordCount2 = function () {
+  var input = $("#tweet-text-modal").val().length;
+  console.log('wordcount2 called')
+
+  if (input > 280) {
+    $(".word_count_tweets").html(280 - parseInt(input)).css('color', 'red');
+    $("#post_btn").prop("disabled", true);
+  } else {
+    $("#word_count_tweets").html(280 - parseInt(input)).css('color', '#A9A9A9');
+    $("#post_btn").prop("disabled", false);
+  }
+}
+
+
 var tweets_array = []
 
 var addTweet = function(message) {
@@ -26,6 +40,7 @@ var addTweet = function(message) {
   createNewTweet(message)
   console.log(tweets_array)
 }
+
 
 // var deleteTweet = function() {
 
@@ -36,15 +51,18 @@ var updateTweets = function(tweets){
   console.log("Within update Tweets")
   $.each(tweets, function( index, value ){
     createNewTweet(value);
-    $("#tweets").prepend(checkBox)
+    //$("#tweets").prepend(checkBox)
   });
 }
 
 
 var createNewTweet = function(tweetData){
   console.log("creating new tweets")
-  var textArea = $('<textarea id="tweet-text-modal" rows="7" cols="70">');
-  //var checkBox = $('<div class="add_tweet"><input type="checkbox" name="add_tweet"></div>');
+  var textArea = $('<textarea id="tweet-text-modal" rows="7" cols="70" onchange="wordCount2()">');
+  var checkBox = $('<div class="add_tweet"><input type="checkbox" name="add_tweet"></div>');
+  var wordcount = $('<div class="word_count_tweets">280</div>');
+  //var tweet = 
+ // var wordCount2 = $()
   textArea.append(tweetData);
   //textArea.prepend('\n');
   // var date = new Date();
@@ -54,10 +72,10 @@ var createNewTweet = function(tweetData){
   // console.log(id)
   // textArea.prepend(id + ' ' + time);
   $("#tweets").prepend(textArea)
-  //$("#tweets").prepend(checkBox)
+  $("#tweets").prepend(checkBox)
+  $("#tweets").prepend(wordcount)
   //$("#tweets").append('<br>')
 };
-
 
 $(document).on('change', '#post_text', function() {
   console.log("detected change");

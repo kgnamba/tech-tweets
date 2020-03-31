@@ -12,14 +12,20 @@
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script type="text/Javascript" src="{{url_for('static', filename='twitter.js')}}"></script>
         <script>
+            // User information to be rendered in twitter_interface
             var profile_img= {{profile_img|tojson}};
-            var a_token= {{a_token|tojson}};
+            var a_token= {{a_token|tojson}}; // Unsure why a_token and a_token secret are needed
             var a_token_secret= {{a_token_secret|tojson}};
             var user_id= {{user_id|tojson}};
             var screen_name= {{screen_name|tojson}};
+
+            // Holds the user tweets
             var tweets= JSON.stringify(tweets);
+
+            // Disables post button if a demo user
             if (document.getElementById("#screen_name") == "Demo_User"){
-            document.getElementById("#post_btn").disabled = true;
+                $("#post_btn").prop("disabled",true);
+                console.log('it went to demo')
             }
         </script>
     </head>
@@ -119,6 +125,11 @@
             color: 	#A9A9A9;
         }
 
+        .word_count_tweets{
+            font-size: 12px;
+            color: #A9A9A9;
+        }
+
         .tweet_btn {
             display:inline-block;
             box-shadow:inset 0px 0px 0px 0px #bbdaf7;
@@ -210,7 +221,6 @@
             height: 13px;
             padding: 0;
             margin-right:20px;
-            position: absolute;
             top: -1px;
             vertical-align: top;
             *overflow: hidden;
@@ -240,7 +250,7 @@
                             <a href="#" class="tweet_btn " id="post_btn" >Post Thread</a>
                         </div>
                     </div> 
-                    <div id="tweets"></div>   
+                    <div id="tweets"></div> 
                 </div>
                 <div class="col-md-3 search"> 
                     <blockquote class="twitter-tweet"><p lang="en" dir="ltr">1/<br>&quot;Why do my fingers get all wrinkly when I take a bath?” This was the question my 3-year-old daughter asked me recently after bath time. <br><br>I thought for a minute, then realized I didn&#39;t have a clue. <br><br>The explanation is so much cooler than I had expected... <a href="https://t.co/mFyeKm8Edc">pic.twitter.com/mFyeKm8Edc</a></p>&mdash; Tony Breu (@tony_breu) <a href="https://twitter.com/tony_breu/status/1017179836320710657?ref_src=twsrc%5Etfw">July 11, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
