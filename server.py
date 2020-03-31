@@ -1,10 +1,8 @@
-from data import profile_img, status, tweets
 from flask import render_template
 from flask import Flask, Response, request, jsonify, json, redirect, session 
 from requests_oauthlib import OAuth1, OAuth1Session
 from urllib.parse import urlparse
 import os
-import post # this is necessary to run run_auth()
 from dotenv import load_dotenv
 import requests
 import tweepy
@@ -26,19 +24,19 @@ a_token = ''
 a_token_secret=''
 user_id=''
 screen_name = ''
+profile_img = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
 request_url = "https://api.twitter.com/oauth/request_token"
-auth_url = "http://api.twitter.com/oauth/authorize"
+auth_url = "https://api.twitter.com/oauth/authorize"
 access_url = "https://api.twitter.com/oauth/access_token"
 update_url = "http://api.twitter.com/1/statuses/update.json"
-callback_url = 'http://127.0.0.1:5000/callback'
 
 @app.route('/')
-def home(name=None):
+def home():
     return render_template('home.html')
 
 @app.route('/twitter_interface', methods=['GET', 'POST'])
 # Setting up twitter_interface page and gets user info
-def twitter_interface(name=None):
+def twitter_interface():
     global a_token
     global a_token_secret
     global screen_name
@@ -72,8 +70,8 @@ def twitter_interface(name=None):
         return render_template('home.html') 
 
 
-@app.route('/create_account', methods=['GET', 'POST'])
-def create_account(name=None):
+@app.route('/demo', methods=['GET', 'POST'])
+def demo():
     screen_name = "Demo_User"
     user_id = None
     a_token = None
@@ -97,24 +95,6 @@ def auth():
     # Create a URL with client permissions
     auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token) # callback URL
     return auth
-
-@app.route("/post", methods=["GET", "POST"])
-def post_func():
-
-    json_data = request.get_json() # Get tweets from twitter.js
-    tweets_array = json_data["tweets"]
-    
-    thread_keys = dict(consumer_key=key,
-            consumer_secret=secret,
-            access_token_key=a_token,
-            access_token_secret=a_token_secret)
-    
-    thread_api = TwitterAPI(**thread_keys)
-
-    th = Threader(tweets_array, thread_api, wait=1)
-    th.send_tweets()
-
-    return {'screen_name': screen_name}
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(24)
