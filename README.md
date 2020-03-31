@@ -17,12 +17,12 @@ Tech Tweets is an AI driven web application designed to help researches explain 
 
 ## Code Explanation
 Jump To:
-* [server.py](#server.py)
-* [home.html](#home.html)
-* [home.js](#home.js)
-* [twitter_interface.html](#twitter_interface.html)
-* [twitter.js](#twitter.js)
-* [fragments.py](#fragements.py)
+* [server.py](#server%2Epy)
+* [home.html](#home%2Ehtml)
+* [home.js](#home%2Ejs)
+* [twitter_interface.html](#twitter_interface%2Ehtml)
+* [twitter.js](#twitter%2Ejs)
+* [fragments.py](#fragements%2Epy)
 
 ### server.py
 Backend of the project. 
