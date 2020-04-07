@@ -103,7 +103,6 @@ var post = function(tweets){
             console.log(status)
             console.log(error)
             console.log(tweets)
-            console.log(tweets_array)
             generate_modal("Error sending Tweet")
         }
     });
@@ -128,9 +127,9 @@ $(document).ready(function(){
       $("#post_btn").addClass("btn_disable")
     }
 
-    //$( ".tweet_btn" ).mouseout(function() {
-    //  $(".tweet_btn").removeClass(".btn_active").removeClass(".btn_hover")
-    //});
+    $( ".tweet_btn" ).mouseout(function() {
+      $(".tweet_btn").removeClass(".btn_hover")
+    });
 
     $( "#post_btn" ).mouseover(function() {
       if(document.getElementById("post_btn").disabled != true) {
@@ -144,7 +143,7 @@ $(document).ready(function(){
 
     $(".tweet_btn").click(function() {
       if (document.getElementById("post_btn").disabled != true) {
-        $(".tweet_btn").removeClass("btn_hover").addClass("btn_active")
+        $(".tweet_btn").removeClass("btn_hover")
       }
     });
 
@@ -157,13 +156,13 @@ $(document).ready(function(){
       wordCount();
     });
 
-    $(document).on('click',"#post_btn",function() {
+    $(document).on('click',"#post_btn", function() {
       var message = $("#post_text").val();
       if (document.getElementById("post_btn").disabled != true) {
         if (message.length > 0) {
           // this condition is so that no extra tweet posted if 
           // user has textbox selected
-          addTweet(message)
+          addTweet(message);
         }
         post(tweets_array)
         $("#post_text").val('');

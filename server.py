@@ -96,6 +96,23 @@ def auth():
     auth = "{url}?oauth_token={token}".format(url=auth_url, token=oauth_token) # callback URL
     return auth
 
+@app.route("/post", methods=['GET', 'POST'])
+def post_tweets():
+
+    json_data = request.get_json()  # Get tweets from twitter.js
+    tweets_array = json_data["tweets"]
+
+    thread_keys = dict(consumer_key=key,
+            consumer_secret=secret,
+            access_token_key=a_token,
+            access_token_secret=a_token_secret)
+
+    thread_api = TwitterAPI(**thread_keys)
+
+    th = Threader(tweets_array, thread_api, wait=1)
+    th.send_tweets()
+
+    return {'screen_name': screen_name}
 if __name__ == "__main__":
     app.secret_key = os.urandom(24)
     app.run(debug=True)
