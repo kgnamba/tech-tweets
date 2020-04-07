@@ -48,9 +48,9 @@ var addTweet = function(message) {
 }
 
 
-// var deleteTweet = function() {
+var deleteTweet = function() {
 
-// }
+}
 
 var updateTweets = function(tweets){
   $("#tweets").empty()
@@ -65,22 +65,12 @@ var updateTweets = function(tweets){
 var createNewTweet = function(tweetData){
   console.log("creating new tweets")
   var textArea = $('<textarea id="tweet-text-modal" rows="7" cols="70" onchange="wordCount2()">');
-  var checkBox = $('<div class="add_tweet"><input type="checkbox" name="add_tweet"></div>');
+  var checkBox = $('<button id="x_btn"><i class="fa fa-close"></button>');
   var wordcount = $('<div class="word_count_tweets">280</div>');
-  //var tweet = 
- // var wordCount2 = $()
   textArea.append(tweetData);
-  //textArea.prepend('\n');
-  // var date = new Date();
-  // var time = date.toLocaleString();
-  //  id = $("#screen_name").text();
-  // console.log("ID")
-  // console.log(id)
-  // textArea.prepend(id + ' ' + time);
   $("#tweets").prepend(textArea)
   $("#tweets").prepend(checkBox)
   $("#tweets").prepend(wordcount)
-  //$("#tweets").append('<br>')
 };
 
 $(document).on('change', '#post_text', function() {
@@ -128,7 +118,7 @@ $(document).ready(function(){
     }
 
     $( ".tweet_btn" ).mouseout(function() {
-      $(".tweet_btn").removeClass(".btn_hover")
+      $(".tweet_btn").removeClass("btn_hover")
     });
 
     $( "#post_btn" ).mouseover(function() {
@@ -164,8 +154,10 @@ $(document).ready(function(){
           // user has textbox selected
           addTweet(message);
         }
+        console.log(tweets_array)
         post(tweets_array)
         $("#post_text").val('');
+        tweets_array = []
         updateTweets(tweets);
         wordCount();
       }

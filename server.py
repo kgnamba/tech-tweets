@@ -108,11 +108,13 @@ def post_tweets():
             access_token_secret=a_token_secret)
 
     thread_api = TwitterAPI(**thread_keys)
-
+    
+    # tweets_array MUST be a list
     th = Threader(tweets_array, thread_api, wait=1)
     th.send_tweets()
 
     return {'screen_name': screen_name}
+
 if __name__ == "__main__":
     app.secret_key = os.urandom(24)
     app.run(debug=True)

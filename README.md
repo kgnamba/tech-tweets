@@ -9,9 +9,9 @@ Tech Tweets is an AI driven web application designed to help researches explain 
 
 ## To Do
 1. Figure out why a_token and a_token_secret are passed into twitter_interface.html
-2. DISABLE POST BUTTON IN DEMO MODE!!!
+2. Error when trying to post a single tweet that has not been "added" to tweets_array
 3. Delete Tweets functionality.
-    * Use dictionary with key index to make this easier? Could also help with word count...
+    * Do we want to be able to delete multiple tweets at once or just one at a time?
 4. Remodel twitter_interface to look more like twitter.
 5. Maybe organize code explanation by like, folders or something :/
 
