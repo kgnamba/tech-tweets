@@ -12,10 +12,14 @@ var wordCount = function(){
   if(input > 280){
     $("#word_count").html(280 - parseInt(input)).css('color','red');
     $("#post_btn").prop("disabled",true);
+    $("#post_btn").addClass("btn_disable");
   }
   else{
     $("#word_count").html(280 - parseInt(input)).css('color','#A9A9A9');
-    $("#post_btn").prop("disabled",false);
+    if (screen_name != "Demo_User") {
+      $("#post_btn").prop("disabled", false);
+      $("#post_btn").removeClass("btn_disable");
+    }
   }
 }
 
@@ -27,8 +31,10 @@ var wordCount2 = function () {
     $(".word_count_tweets").html(280 - parseInt(input)).css('color', 'red');
     $("#post_btn").prop("disabled", true);
   } else {
-    $("#word_count_tweets").html(280 - parseInt(input)).css('color', '#A9A9A9');
-    $("#post_btn").prop("disabled", false);
+    $("#word_count").html(280 - parseInt(input)).css('color', '#A9A9A9');
+    if (screen_name != "Demo_User") {
+      $("#post_btn").prop("disabled", false);
+    }
   }
 }
 
@@ -116,16 +122,30 @@ $(document).ready(function(){
     $("#screen_name").empty();
     $("#screen_name").append(screen_name)
 
-    $( ".tweet_btn" ).mouseout(function() {
-      $(".tweet_btn").removeClass(".btn_active").removeClass(".btn_hover")
+    if (screen_name== "Demo_User") {
+      // Disable post button if in Demo Mode
+      $("#post_btn").prop("disabled", true);
+      $("#post_btn").addClass("btn_disable")
+    }
+
+    //$( ".tweet_btn" ).mouseout(function() {
+    //  $(".tweet_btn").removeClass(".btn_active").removeClass(".btn_hover")
+    //});
+
+    $( "#post_btn" ).mouseover(function() {
+      if(document.getElementById("post_btn").disabled != true) {
+        $("#post_btn").addClass("btn_hover")
+      }
     });
 
-    $( ".tweet_btn" ).mouseover(function() {
-      $(".tweet_btn").addClass(".btn_hover")
-    });
+    $("#add_btn").mouseover(function() {
+      $("#add_btn").addClass("btn_hover")
+    })
 
     $(".tweet_btn").click(function() {
-      $(".tweet_btn").removeClass(".btn_hover").addClass(".btn_active")
+      if (document.getElementById("post_btn").disabled != true) {
+        $(".tweet_btn").removeClass("btn_hover").addClass("btn_active")
+      }
     });
 
     $("#post_text").click(function() {
@@ -139,15 +159,18 @@ $(document).ready(function(){
 
     $(document).on('click',"#post_btn",function() {
       var message = $("#post_text").val();
-      if (message.length > 0) { 
-        // this condition is so that no extra tweet posted if 
-        // user has textbox selected
-        addTweet(message)
+      if (document.getElementById("post_btn").disabled != true) {
+        if (message.length > 0) {
+          // this condition is so that no extra tweet posted if 
+          // user has textbox selected
+          addTweet(message)
+        }
+        post(tweets_array)
+        $("#post_text").val('');
+        updateTweets(tweets);
+        wordCount();
       }
-      post(tweets_array)
-      $("#post_text").val('');
-      updateTweets(tweets);
-      wordCount();
+      
     });
 
     $(document).on('click',"#add_btn",function() {

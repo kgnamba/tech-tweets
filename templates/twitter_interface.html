@@ -23,10 +23,6 @@
             var tweets= JSON.stringify(tweets);
 
             // Disables post button if a demo user
-            if (document.getElementById("#screen_name") == "Demo_User"){
-                $("#post_btn").prop("disabled",true);
-                console.log('it went to demo')
-            }
         </script>
     </head>
     <style>
@@ -144,31 +140,33 @@
             text-decoration:none;
         }
 
-        .tweet_btn:hover{
+        /* .tweet_btn:hover{
             background-color:#84bbf3;
             color:#ffffff;
             text-decoration: none;
-        }
+        } */
 
-        .tweet_btn:active{
+        /* .tweet_btn:active{
             background-color: #3366CC;
             text-decoration: none;
-        }
-
-        /* .btn_disable{
-            background-color: gray;
-            color: black;
         } */
 
         .btn_hover{
             background-color:#84bbf3;
             color:#ffffff;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .btn_active{
             background-color: #3366CC;
             text-decoration: none;
+        }
+
+        .btn_disable {
+            cursor: default;
+            background-color: lightgray;
+            color: gray;
         }
 
         #tweets{
@@ -246,8 +244,8 @@
                             <input type="image" id="images" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4Igp3aWR0aD0iNDgiIGhlaWdodD0iNDgiCnZpZXdCb3g9IjAgMCAxNzIgMTcyIgpzdHlsZT0iIGZpbGw6IzAwMDAwMDsiPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1kYXNoYXJyYXk9IiIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjAiIGZvbnQtZmFtaWx5PSJub25lIiBmb250LXdlaWdodD0ibm9uZSIgZm9udC1zaXplPSJub25lIiB0ZXh0LWFuY2hvcj0ibm9uZSIgc3R5bGU9Im1peC1ibGVuZC1tb2RlOiBub3JtYWwiPjxwYXRoIGQ9Ik0wLDE3MnYtMTcyaDE3MnYxNzJ6IiBmaWxsPSJub25lIj48L3BhdGg+PGc+PHBhdGggZD0iTTE1Ny42NjY2Nyw4NmMwLDM5LjU3NzkyIC0zMi4wODg3NSw3MS42NjY2NyAtNzEuNjY2NjcsNzEuNjY2NjdjLTM5LjU3NzkyLDAgLTcxLjY2NjY3LC0zMi4wODg3NSAtNzEuNjY2NjcsLTcxLjY2NjY3YzAsLTM5LjU3NzkyIDMyLjA4ODc1LC03MS42NjY2NyA3MS42NjY2NywtNzEuNjY2NjdjMzkuNTc3OTIsMCA3MS42NjY2NywzMi4wODg3NSA3MS42NjY2Nyw3MS42NjY2N3oiIGZpbGw9IiMzNDk4ZGIiPjwvcGF0aD48cGF0aCBkPSJNNzguODMzMzMsNTMuNzVoMTQuMzMzMzN2NjQuNWgtMTQuMzMzMzN6IiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PHBhdGggZD0iTTUzLjc1LDc4LjgzMzMzaDY0LjV2MTQuMzMzMzNoLTY0LjV6IiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PC9nPjwvZz48L3N2Zz4="/>
                                 <input type="file" id="my_file" style="display: none;" />
                             <div id="word_count"> 280 </div>
-                            <a href="#" class="tweet_btn" id="add_btn" >Add Tweet</a>
-                            <a href="#" class="tweet_btn " id="post_btn" >Post Thread</a>
+                            <a href="#" name="button" class="tweet_btn" id="add_btn" >Add Tweet</a>
+                            <a href="#" name="button" class="tweet_btn " id="post_btn" >Post Thread</a>
                         </div>
                     </div> 
                     <div id="tweets"></div> 
