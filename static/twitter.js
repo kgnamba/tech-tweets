@@ -182,6 +182,7 @@ $(document).ready(function(){
         post(filtered)
         $("#post_text").val('');
         tweets_array = []
+        i = 0
         updateTweets(tweets);
         wordCount();
       }
