@@ -23,15 +23,14 @@ var wordCount = function(){
   }
 }
 
-var wordCount2 = function () {
-  var input = $("#tweet-text-modal").val().length;
-  console.log('wordcount2 called')
+var wordCount2 = function (i) {
+  var input = $(".tweet-text-modal."+String(i)).val().length;
 
   if (input > 280) {
-    $(".word_count_tweets").html(280 - parseInt(input)).css('color', 'red');
+    $(".word_count_tweets."+i).html(280 - parseInt(input)).css('color', 'red');
     $("#post_btn").prop("disabled", true);
   } else {
-    $("#word_count").html(280 - parseInt(input)).css('color', '#A9A9A9');
+    $(".word_count_tweets."+i).html(280 - parseInt(input)).css('color', '#A9A9A9');
     if (screen_name != "Demo_User") {
       $("#post_btn").prop("disabled", false);
     }
@@ -44,39 +43,51 @@ var tweets_array = []
 var addTweet = function(message) {
   tweets_array.push(message)
   createNewTweet(message)
-  console.log(tweets_array)
 }
 
 
-var deleteTweet = function() {
-
+var deleteTweet = function(i) {
+  console.log('made it' + $('#tweets').get(0))
+  $("#tweet_" + String(i)).remove()
+  delete tweets_array[i]
 }
 
-var updateTweets = function(tweets){
-  $("#tweets").empty()
-  console.log("Within update Tweets")
-  $.each(tweets, function( index, value ){
-    createNewTweet(value);
-    //$("#tweets").prepend(checkBox)
-  });
-}
+// var updateTweets = function(tweets){
+//   $("#tweets").empty()
+//   console.log("Within update Tweets")
+//   x = document.getElementsByClassName('x_btn')
+//   i = 0
+//   $.each(tweets, function( index, value ){
+//     createNewTweet(value, i);
+//     //$("#tweets").prepend(checkBox)
+//   })
+  
+// }
 
+i = 0
 
 var createNewTweet = function(tweetData){
-  console.log("creating new tweets")
-  var textArea = $('<textarea id="tweet-text-modal" rows="7" cols="70" onchange="wordCount2()">');
-  var checkBox = $('<button id="x_btn"><i class="fa fa-close"></button>');
-  var wordcount = $('<div class="word_count_tweets">280</div>');
+  var textArea = $('<textarea class="tweet-text-modal '+i+'" rows="7" cols="70" oninput="wordCount2('+i +')">');
+  var button = $('<button class="x_btn '+i+'" onClick="deleteTweet(' + i +')"><i class="fa fa-close"></button></div>');
+  var wordcount = $('<div class="word_count_tweets '+i+'">'+ String(280-tweetData.length) +'</div>');
+
+  //<div id="tweet_"' + String(i) +'>
   textArea.append(tweetData);
+  //textArea.on('input', wordCount2(i))
+  $("#tweets").prepend(button)
   $("#tweets").prepend(textArea)
-  $("#tweets").prepend(checkBox)
+
   $("#tweets").prepend(wordcount)
+  $('.'+i).wrapAll('<div id="tweet_'+ i + '"></div>')
+  
+  scrollDown()
+  i++
 };
 
-$(document).on('change', '#post_text', function() {
-  console.log("detected change");
-  wordCount();
-});
+// $(document).on('change', '#post_text', function() {
+//   console.log("detected change");
+//   wordCount();
+// });
 
 var post = function(tweets){
   $.ajax({
@@ -98,6 +109,12 @@ var post = function(tweets){
     });
 }
 
+var scrollDown = function() {
+  adds = document.getElementById('add-ons')
+  adds.scrollTop = adds.scrollHeight
+  console.log(adds.scrollTop)
+}
+
 $(document).mousemove(function(event){
   //console.log("Window reference");
   //console.log(window.location.href)
@@ -106,7 +123,7 @@ $(document).mousemove(function(event){
 $(document).ready(function(){
   
 
-    updateTweets(tweets)
+    // updateTweets(tweets)
 
     $("#screen_name").empty();
     $("#screen_name").append(screen_name)
@@ -137,9 +154,14 @@ $(document).ready(function(){
       }
     });
 
-    $("#post_text").click(function() {
-        var message = $("#post_text").val();
-    });
+    // $("#post_text").click(function() {
+    //     var message = $("#post_text").val();
+    // });
+
+    // $(document).on('change', '.tweet_text_modal', function() {
+    //   text_modals = document.getElementsByClassName('tweet_text_modal')
+    //   for( i =0; i < text_modals)
+    // })
 
     $("#post_text").on("input", function(){
       // Print entered value in a div box
@@ -158,7 +180,7 @@ $(document).ready(function(){
         post(tweets_array)
         $("#post_text").val('');
         tweets_array = []
-        updateTweets(tweets);
+        //updateTweets(tweets);
         wordCount();
       }
       
