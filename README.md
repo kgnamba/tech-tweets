@@ -9,10 +9,11 @@ Tech Tweets is an AI driven web application designed to help researches explain 
 
 ## To Do
 1. Figure out why a_token and a_token_secret are passed into twitter_interface.html
-2. Error when trying to post a single tweet that has not been "added" to tweets_array
+2. Should there be error if only trying to post one tweet?
 3. Do we want to be able to delete multiple tweets at once or just one at a time?
 4. Remodel twitter_interface to look more like twitter.
-5. Maybe organize code explanation by like, folders or something :/
+5. Get the upload files/images button in twitter interface to work.
+6. Maybe organize code explanation by like, folders or something :/
 
 ## Code Explanation
 Jump To:
@@ -41,7 +42,8 @@ The Tech Tweets app interface. Create and review twitter threads and post them t
 
 ### twitter.js
 Javascript functions for the twitter interface page. 
-* Creates tweets and hold tweets
+* Creates tweets, delete tweets, and hold tweets
+    * NOTE: deleteTweets works by passing tweet index in array. Deletes tweets WITHOUT removing null el from array
 * Functions to post thread to twitter
 * Creates textboxes for tweets
 

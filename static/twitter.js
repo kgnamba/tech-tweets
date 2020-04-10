@@ -48,7 +48,6 @@ var addTweet = function(message) {
 
 
 var deleteTweet = function(i) {
-  console.log('made it' + $('#tweets').get(0))
   $("#tweet_" + String(i)).remove()
   delete tweets_array[i]
 }
@@ -73,9 +72,9 @@ var createNewTweet = function(tweetData){
 
   textArea.append(tweetData);
 
+  $("#tweets").prepend(wordcount)
   $("#tweets").prepend(button)
   $("#tweets").prepend(textArea)
-  $("#tweets").prepend(wordcount)
 
   $('.'+i).wrapAll('<div id="tweet_'+ i + '"></div>') // Wrap in a div so it can be deleted
   
@@ -175,7 +174,7 @@ $(document).ready(function(){
           // user has textbox selected
           addTweet(message);
         }
-        console.log(tweets_array)
+
         filtered = tweets_array.filter(function(el){
           return el != null
         })
