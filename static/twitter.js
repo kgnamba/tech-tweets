@@ -23,6 +23,7 @@ var wordCount = function(){
   }
 }
 
+// This is the wordcount function for tweets in the thread
 var wordCount2 = function (i) {
   var input = $(".tweet-text-modal."+String(i)).val().length;
 
@@ -64,21 +65,20 @@ var deleteTweet = function(i) {
   
 // }
 
-i = 0
+i = 0 // This is to keep track of each tweet index
 
 var createNewTweet = function(tweetData){
   var textArea = $('<textarea class="tweet-text-modal '+i+'" rows="7" cols="70" oninput="wordCount2('+i +')">');
   var button = $('<button class="x_btn '+i+'" onClick="deleteTweet(' + i +')"><i class="fa fa-close"></button></div>');
   var wordcount = $('<div class="word_count_tweets '+i+'">'+ String(280-tweetData.length) +'</div>');
 
-  //<div id="tweet_"' + String(i) +'>
   textArea.append(tweetData);
-  //textArea.on('input', wordCount2(i))
+
   $("#tweets").prepend(button)
   $("#tweets").prepend(textArea)
-
   $("#tweets").prepend(wordcount)
-  $('.'+i).wrapAll('<div id="tweet_'+ i + '"></div>')
+
+  $('.'+i).wrapAll('<div id="tweet_'+ i + '"></div>') // Wrap in a div so it can be deleted
   
   scrollDown()
   i++
