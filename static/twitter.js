@@ -53,17 +53,16 @@ var deleteTweet = function(i) {
   delete tweets_array[i]
 }
 
-// var updateTweets = function(tweets){
-//   $("#tweets").empty()
-//   console.log("Within update Tweets")
-//   x = document.getElementsByClassName('x_btn')
-//   i = 0
-//   $.each(tweets, function( index, value ){
-//     createNewTweet(value, i);
-//     //$("#tweets").prepend(checkBox)
-//   })
-  
-// }
+var updateTweets = function(tweets){
+  $("#tweets").empty()
+  console.log("Within update Tweets")
+  x = document.getElementsByClassName('x_btn')
+  i = 0
+  $.each(tweets, function( index, value ){
+    createNewTweet(value, i);
+  })
+
+}
 
 i = 0 // This is to keep track of each tweet index
 
@@ -123,7 +122,7 @@ $(document).mousemove(function(event){
 $(document).ready(function(){
   
 
-    // updateTweets(tweets)
+    updateTweets(tweets)
 
     $("#screen_name").empty();
     $("#screen_name").append(screen_name)
@@ -177,10 +176,13 @@ $(document).ready(function(){
           addTweet(message);
         }
         console.log(tweets_array)
-        post(tweets_array)
+        filtered = tweets_array.filter(function(el){
+          return el != null
+        })
+        post(filtered)
         $("#post_text").val('');
         tweets_array = []
-        //updateTweets(tweets);
+        updateTweets(tweets);
         wordCount();
       }
       
