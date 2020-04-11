@@ -4,7 +4,7 @@ Tech Tweets is an AI driven web application designed to help researches explain 
 ## Table of Contents
 
 * [TO DO](#to-do)
-* [Requirements] (#requirements)
+* [Requirements](#requirements)
 * [Code Explanation](#code-explanation)
 * [Notes](#notes)
 
