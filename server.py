@@ -5,15 +5,15 @@ from urllib.parse import urlparse
 import os
 from dotenv import load_dotenv
 import requests
-import tweepy
 import json
 from flask_cors import CORS
 import sys
-from TwitterAPI import TwitterAPI
-from threader import Threader
+from TwitterAPI import TwitterAPI # This is used with Threader
+from threader import Threader # Post threads to twitter
 
 app = Flask(__name__)
 CORS(app)
+load_dotenv(dotenv_path='API_KEYS.env') # dotenv_path should match YOUR .env file
 
 # This information is obtained upon registration of a new client on twitter
 key = os.getenv("consumer_key")

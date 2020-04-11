@@ -54,13 +54,9 @@ var deleteTweet = function(i) {
 
 var updateTweets = function(tweets){
   $("#tweets").empty()
-  console.log("Within update Tweets")
-  x = document.getElementsByClassName('x_btn')
-  i = 0
   $.each(tweets, function( index, value ){
-    createNewTweet(value, i);
+    createNewTweet(value);
   })
-
 }
 
 i = 0 // This is to keep track of each tweet index
@@ -82,11 +78,6 @@ var createNewTweet = function(tweetData){
   i++
 };
 
-// $(document).on('change', '#post_text', function() {
-//   console.log("detected change");
-//   wordCount();
-// });
-
 var post = function(tweets){
   $.ajax({
         type: "POST", url: "post", dataType : "json", contentType: "application/json; charset=utf-8",
@@ -107,11 +98,11 @@ var post = function(tweets){
     });
 }
 
-var scrollDown = function() {
-  adds = document.getElementById('add-ons')
-  adds.scrollTop = adds.scrollHeight
-  console.log(adds.scrollTop)
-}
+// var scrollDown = function() {
+//   adds = document.getElementById('add-ons')
+//   adds.scrollTop = adds.scrollHeight
+//   console.log(adds.scrollTop)
+// }
 
 $(document).mousemove(function(event){
   //console.log("Window reference");
@@ -152,15 +143,6 @@ $(document).ready(function(){
       }
     });
 
-    // $("#post_text").click(function() {
-    //     var message = $("#post_text").val();
-    // });
-
-    // $(document).on('change', '.tweet_text_modal', function() {
-    //   text_modals = document.getElementsByClassName('tweet_text_modal')
-    //   for( i =0; i < text_modals)
-    // })
-
     $("#post_text").on("input", function(){
       // Print entered value in a div box
       wordCount();
@@ -193,7 +175,6 @@ $(document).ready(function(){
       addTweet(message)
       $("#post_text").val('');
       wordCount();
-      console.log("add buttton clicked")
     });
 
     $("input[type='image']").click(function() {
