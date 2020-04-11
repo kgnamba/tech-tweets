@@ -58,7 +58,7 @@ Javascript functions for the twitter interface page.
 * Creates textboxes for tweets
 
 ## Notes
-***BEWARE*** - There is a .gitignore file that has the API_KEYS. Make sure you have access.
-***BEWARE*** - The callback URL for authentication is defined via the developer account. Have callback 127.0.0.1:5000
-***BEWARE*** - Make sure that in server.py that your load_dotenv(dotenv_path= YOUR .ENV FILE)
+***BEWARE*** - There is a .gitignore file that has the API_KEYS. Make sure you have access. \
+***BEWARE*** - The callback URL for authentication is defined via the developer account. Have callback 127.0.0.1:5000 \
+***BEWARE*** - Make sure that in server.py that your load_dotenv(dotenv_path= YOUR .ENV FILE) \
 Created using Python 3.7.3
