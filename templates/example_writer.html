@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- bootstrap --> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+        <!-- Jquery--> 
+        <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+        <!-- embedded tweet formatter -->
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        <!-- flask javascript -->
+        <script type="text/Javascript">
+ 
+
+            example_urls = [
+            ['https://twitter.com/yashar/status/1093381319428530176', 'journalism'],
+            ['https://twitter.com/wallaceme/status/1110836282480082944', 'history'],
+            ['https://twitter.com/GeneticJen/status/897153589193441281', 'biology'],
+            ['https://twitter.com/random_walker/status/1182635589604171776', 'computer science'],
+            ['https://twitter.com/meehancrist/status/1197527975379505152', 'climate science'],
+            ['https://twitter.com/tony_breu/status/1017179836320710657', 'physiology'],
+            ['https://twitter.com/GeneticJen/status/824592017539883008', 'general science'],
+            ['https://twitter.com/tony_breu/status/1053671032140251136', 'physiology'],
+            ['https://twitter.com/neuroecology/status/1146428513920126976', 'biology'],
+            ['https://twitter.com/JacquelynGill/status/1148969906794192896', 'biology'],
+            ['https://twitter.com/constababble/status/1096664046063935488', 'journalism'],
+            ['https://twitter.com/chrisdc77/status/960306753220104193', 'journalism'],
+            ['https://twitter.com/MalwareJake/status/1173278857773932545', 'policy'],
+            ['https://twitter.com/propublica/status/1204491630855761921', 'policy'],
+            ['https://twitter.com/michaelharriot/status/1204924987100073984', 'history'],
+            ['https://twitter.com/ewanbirney/status/1201124519605407745', 'biology'],
+            ['https://twitter.com/davelevitan/status/1193017994072350720', 'climate science'],
+            ['https://twitter.com/ChristinaToms/status/1199909280184356866', 'biology']            ];
+
+            example_tweets = [];
+            show_tweets = [];
+            topics = {};
+
+            function refresh_examples() {
+                $('.example-hooks').empty();
+                for (var i = show_tweets.length - 1; i >=0; i--) {
+                    var twt_idx = show_tweets[i];
+                    $('.example-hooks').append(example_tweets[twt_idx].html);
+                }
+            }
+
+
+            $(document).ready(function(){
+                $.each(example_urls, function (i, val) {
+                    if (!(val[1] in topics)) {
+                        topics[val[1]] = 1;
+                    } else {
+                        topics[val[1]]++;
+                    }
+                    $.ajax( {
+                        url: 'https://publish.twitter.com/oembed?omit_script=true&url='+val[0],
+                        dataType: "jsonp",
+                        success: function(data) {
+                            data['topic'] = val[1];
+                            example_tweets.push(data);
+                        }
+                    });
+                });
+
+                console.log('topics', topics);
+                $.each(topics, function(key, val) {
+                    var text = key + " (" + val.toString() + ")";
+                    var btn = $("<button>")
+                        .addClass("btn btn-primary")
+                        .text(text)
+                        .attr('id', key)
+                        .click( function() {
+                            show_tweets = [];
+                            var id = $(this).attr('id');
+                            console.log('clicked', id);
+                            for (var i = example_tweets.length - 1; i >=0; i--) {
+                                if (example_tweets[i].topic == id){
+                                    show_tweets.push(i);
+                                }
+                            }
+                            refresh_examples();
+                        });
+                    $('.buttons').append(btn);
+                });
+
+                $('.see-all').click( function () {
+                    show_tweets = [];
+                    for (var i = example_tweets.length - 1; i >=0; i--) {
+                        show_tweets.push(i);
+                    }
+                    refresh_examples();
+                });
+
+                $('.see-random').click( function() {
+                    var i = Math.floor(Math.random() * example_tweets.length);
+                    show_tweets = [i];
+                    refresh_examples();
+                });
+            });
+        </script>
+    </head>
+
+    <style>
+        #heading{
+            color: #111; 
+            font-family: 'Helvetica Neue', sans-serif; 
+            font-size: 40px; 
+            font-weight: lighter; letter-spacing: 3px; line-height: 1; text-align: center; 
+            padding-top: 100px;
+            padding-bottom: 20px;
+            }
+        .btn {
+            margin-bottom: 5px;
+            margin-right: 5px;
+        }
+        .twitter-tweet {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+    
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <div id="heading">Draft Your Tweetorial Hook</div>
+                    <p>The first tweet of a tweetorial should "hook" your audience. Hooks often refer to something recent or emotional, correct a misconception, or create a sense of wonder and awe. They create some kind of intrigue or curiosity that makes the reader want to learn about the principle to be explained.</p>
+                    <p>You browse expert examples of tweetorial hooks by clicking on the buttons to the right.</p>
+                    <textarea id='draft' class="form-control" rows="6"></textarea>
+                </div>
+
+                <div class="col-md-5"> 
+                    <div id="heading">See Examples</div>
+                      <div class="buttons">
+                          <button class="btn btn-primary see-all">see all</button>
+                          <button class="btn btn-primary see-random">see random</button>
+                      </div>
+                      <div class="example-hooks">
+                      </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        
+
+    </body>
+</html>
