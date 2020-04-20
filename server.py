@@ -13,7 +13,7 @@ from threader import Threader # Post threads to twitter
 
 app = Flask(__name__)
 CORS(app)
-load_dotenv(dotenv_path='API_KEYS.env') # dotenv_path should match YOUR .env file
+load_dotenv(dotenv_path='..\API_KEYS.env') # dotenv_path should match YOUR .env file
 
 # This information is obtained upon registration of a new client on twitter
 key = os.getenv("consumer_key")

@@ -17,8 +17,8 @@ Tech Tweets is an AI driven web application designed to help researches explain 
 6. Maybe organize code explanation by like, folders or something :/
 
 ## Requirements
-These can be installed using pip.
-* Python 3.5+ (I actually don't know if version matters)
+These can be installed using pip. Versions in requirements.txt.
+* Python (I actually don't know if version matters)
 * Threader (Can be installed using pip)
 * Flask, flask_cors
 * dotenv (This is for .env file)
