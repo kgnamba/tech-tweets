@@ -74,7 +74,7 @@ var createNewTweet = function(tweetData){
 
   $('.'+i).wrapAll('<div id="tweet_'+ i + '"></div>') // Wrap in a div so it can be deleted
   
-  scrollDown()
+  //scrollDown()
   i++
 };
 
@@ -148,6 +148,11 @@ $(document).ready(function(){
       wordCount();
     });
 
+    $(document).on('input', '#my_file', function() {
+      var file = $('#my_file').val()
+      console.log('file: ' + file)
+    })
+
     $(document).on('click',"#post_btn", function() {
       var message = $("#post_text").val();
       if (document.getElementById("post_btn").disabled != true) {
@@ -158,13 +163,14 @@ $(document).ready(function(){
         }
 
         filtered = tweets_array.filter(function(el){
+          // remove the null elements from tweets array before post
           return el != null
         })
         post(filtered)
         $("#post_text").val('');
         tweets_array = []
         i = 0
-        updateTweets(tweets);
+        updateTweets(tweets_array);
         wordCount();
       }
       
@@ -175,11 +181,11 @@ $(document).ready(function(){
       addTweet(message)
       $("#post_text").val('');
       wordCount();
+      updateTweets(tweets_array);
     });
 
     $("input[type='image']").click(function() {
       $("input[id='my_file']").focus().click();
-      
     });
 
 });
