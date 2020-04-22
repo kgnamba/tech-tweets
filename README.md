@@ -1,31 +1,65 @@
-# Using Twitter for Science Communication
+# Tech Tweets
+Tech Tweets is an AI driven web application designed to help researches explain their work on Twitter.
 
-## Example Tweetorials
+## Table of Contents
 
-Computer science
-* a wacky problem for AI ethicists https://twitter.com/jonathanstray/status/1167217965638406144
-* why enterprise software sucks https://twitter.com/random_walker/status/1182635589604171776
-* what is a VPN https://twitter.com/katyilonka/status/1113907133882482689
+* [TO DO](#to-do)
+* [Requirements](#requirements)
+* [Code Explanation](#code-explanation)
+* [Notes](#notes)
 
-Evolution and biology
-* a thread about dung beetles https://twitter.com/i/moments/897362339518926849
-* do butterflies remember being caterpillars? https://twitter.com/i/moments/899757563935432706
+## To Do
+1. Figure out why a_token and a_token_secret are passed into twitter_interface.html
+2. Should there be error if only trying to post one tweet?
+3. Remodel twitter_interface to look more like twitter.
+4. Have automatic scroll down when adding tweets.
+5. Get the upload files/images button in twitter interface to work.
+6. Maybe organize code explanation by like, folders or something :/
 
-Climate change
-* how are the fires in California impacted by climate change? https://twitter.com/meehancrist/status/1197527975379505152
+## Requirements
+These can be installed using pip. Versions in requirements.txt.
+* Python (I actually don't know if version matters)
+* Threader (Can be installed using pip)
+* Flask, flask_cors
+* dotenv (This is for .env file)
+* TwitterAPI
+* requests_oauthlib
 
-Physics
-* the relativity of simultaneity https://twitter.com/i/moments/899752815391801346
+## Code Explanation
+Jump To:
+* [server.py](#serverpy)
+* [home.html](#homehtml)
+* [home.js](#homejs)
+* [twitter_interface.html](#twitter_interfacehtml)
+* [twitter.js](#twitterjs)
+* [fragments.py](#fragementspy)
 
-Journalism
-* what is “oppo research”? https://twitter.com/yashar/status/1093381319428530176
+### server.py
+Backend of the project. 
+* Renders home, twitter interface, and demo pages
+* Gets user data (profile_img, username, etc.)
+* Runs twitter authorization (run_auth())
 
-Linguistics
-* everyone has an accent https://twitter.com/kbmcgowan/status/1110549232229011456
+### home.html
+Home page. Landing page when running server.py. Goes to twitter authentication or demo mode.
 
-Archeology
-* a cool bit of 20th century urban archaeology https://twitter.com/wallaceme/status/1110836282480082944
+### home.js
+Javascript for home.html. 
+* Runs authentication when log-in button is clicked.
 
-Doctors explaining physiology to other doctors
-* steroids and white blood cell counts https://twitter.com/tony_breu/status/1053671032140251136
-* why your fingers get wrinkly in the bath https://twitter.com/tony_breu/status/1017179836320710657
+### twitter_interface.html
+The Tech Tweets app interface. Create and review twitter threads and post them to twitter account.
+
+### twitter.js
+Javascript functions for the twitter interface page. 
+* Creates tweets, delete tweets, and hold tweets
+    * NOTE: deleteTweets works by passing tweet index in array. Deletes tweets WITHOUT removing null el from array
+* Functions to post thread to twitter
+* Creates textboxes for tweets
+
+## Notes
+***BEWARE*** - There is a .gitignore file that has the API_KEYS. Make sure you have access. \
+***BEWARE*** - The callback URL for authentication is defined via the developer account. Have callback 127.0.0.1:5000 \
+***BEWARE*** - Make sure that in server.py that your load_dotenv(dotenv_path= YOUR .ENV FILE) \
+Created using Python 3.7.3
+

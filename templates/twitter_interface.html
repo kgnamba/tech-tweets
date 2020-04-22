@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- bootstrap --> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Jquery--> 
+        <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script type="text/Javascript" src="{{url_for('static', filename='twitter.js')}}"></script>
+        <script>
+            // User information to be rendered in twitter_interface
+            var profile_img= {{profile_img|tojson}};
+            var a_token= {{a_token|tojson}}; // Unsure why a_token and a_token secret are needed
+            var a_token_secret= {{a_token_secret|tojson}};
+            var user_id= {{user_id|tojson}};
+            var screen_name= {{screen_name|tojson}};
+
+            // Holds the user tweets
+            var tweets= JSON.stringify(tweets);
+
+            // Disables post button if a demo user
+        </script>
+    </head>
+    <style>
+
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .box{
+            color: black;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+        
+        .tabs{
+            text-align: center;
+        }
+
+        .main-content{
+            background-color: 	#F8F8F8;
+        }
+
+        #home{
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        #content-block{
+            display: block;
+            position: relative;
+        }
+
+        #post-block{
+            position: relative;
+            display: block;
+            border: 1px solid 	#A9A9A9;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .profile_picture{
+            width: 70px;
+            height: 70px;
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 20px;
+        }
+
+        #screen_name{
+            display: flex;
+            /* position: absolute; */
+            top: 60%;
+            /* position: absolute;
+            top: 50%; */
+            font-size: 16px;
+        }
+
+        #post_text{
+            display: inline-block;
+            background-color: #F8F8F8;
+            margin-top: 20px;
+            border: 0px;
+            font-size: 18px;
+            width: 100%;
+            height: 100px;
+            overflow: auto;
+            outline: none;
+        }
+
+        input:focus {
+            font-size: 20px;
+            color: black;
+            outline: none; 
+        }
+
+        #add-ons{
+            display: block;
+            text-align: right;
+        }
+
+        #images{
+            display: inline-block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        #word_count{
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 20px;
+            color: 	#A9A9A9;
+        }
+
+        .word_count_tweets{
+            font-size: 12px;
+            color: #A9A9A9;
+        }
+
+        .tweet_btn {
+            display:inline-block;
+            box-shadow:inset 0px 0px 0px 0px #bbdaf7;
+            border-radius:5px;
+            border:1px solid #84bbf3;
+            cursor:pointer;
+            color:#84bbf3;
+            font-family:Arial;
+            font-size:18px;
+            font-weight:bold;
+            padding:5px 13px;
+            text-decoration:none;
+        }
+
+        .btn_hover{
+            background-color:#84bbf3;
+            color:#ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* .btn_active{
+            background-color: #3366CC;
+            text-decoration: none;
+        } */
+
+        .tweet_btn:active{
+            background-color: #3366CC;
+            text-decoration: none;
+        }
+
+        .btn_disable {
+            cursor: default;
+            background-color: lightgray;
+            color: gray;
+        }
+
+        #tweets{
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #dadada;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        .search{
+            text-align: center;
+        }
+
+        #mymodal{
+            position: relative;
+        }
+
+        .modal-content{
+            background-color: #38A1F3;
+            width: 300px;
+            height: 70px;
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .modal-header{
+            border-bottom: 0 none;
+        }
+
+        .close{
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .tweet-text-modal{
+            background-color: #F8F8F8;
+            display: inline-block;
+            font-size: 13px;
+            overflow: auto;
+            outline: none;
+            margin-top: 10px;
+            border: 1px solid #A9A9A9;
+        }
+
+        .add_tweet{
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            padding: 0;
+            margin-right:20px;
+            top: -1px;
+            vertical-align: top;
+            *overflow: hidden;
+        }
+
+    </style>
+    <body>
+        <div class="box">
+            <div class="row">
+                <div class="col-md-3 tabs ">
+                </div>
+                <div class="col-md-6 main-content">
+                    <div id="home"> Home </div>
+                    <div id="content-block">
+
+                         <div id="tweets"></div>
+
+                        <div id="post-block">
+                            <img class="profile_picture" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"></img>
+                            <div id="screen_name"></div>
+                            <textarea rows="7" cols="150" id="post_text" placeholder="What's Happening?" ></textarea><br>
+                        </div>
+                        
+                        <div id="add-ons">
+                            <input type="image" id="images" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4Igp3aWR0aD0iNDgiIGhlaWdodD0iNDgiCnZpZXdCb3g9IjAgMCAxNzIgMTcyIgpzdHlsZT0iIGZpbGw6IzAwMDAwMDsiPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1kYXNoYXJyYXk9IiIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjAiIGZvbnQtZmFtaWx5PSJub25lIiBmb250LXdlaWdodD0ibm9uZSIgZm9udC1zaXplPSJub25lIiB0ZXh0LWFuY2hvcj0ibm9uZSIgc3R5bGU9Im1peC1ibGVuZC1tb2RlOiBub3JtYWwiPjxwYXRoIGQ9Ik0wLDE3MnYtMTcyaDE3MnYxNzJ6IiBmaWxsPSJub25lIj48L3BhdGg+PGc+PHBhdGggZD0iTTE1Ny42NjY2Nyw4NmMwLDM5LjU3NzkyIC0zMi4wODg3NSw3MS42NjY2NyAtNzEuNjY2NjcsNzEuNjY2NjdjLTM5LjU3NzkyLDAgLTcxLjY2NjY3LC0zMi4wODg3NSAtNzEuNjY2NjcsLTcxLjY2NjY3YzAsLTM5LjU3NzkyIDMyLjA4ODc1LC03MS42NjY2NyA3MS42NjY2NywtNzEuNjY2NjdjMzkuNTc3OTIsMCA3MS42NjY2NywzMi4wODg3NSA3MS42NjY2Nyw3MS42NjY2N3oiIGZpbGw9IiMzNDk4ZGIiPjwvcGF0aD48cGF0aCBkPSJNNzguODMzMzMsNTMuNzVoMTQuMzMzMzN2NjQuNWgtMTQuMzMzMzN6IiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PHBhdGggZD0iTTUzLjc1LDc4LjgzMzMzaDY0LjV2MTQuMzMzMzNoLTY0LjV6IiBmaWxsPSIjZmZmZmZmIj48L3BhdGg+PC9nPjwvZz48L3N2Zz4="/>
+                                <input type="file" id="my_file" style="display: none;" />
+                            <div id="word_count"> 280 </div>
+                            <a href="#" name="button" class="tweet_btn" id="add_btn" >Add Tweet</a>
+                            <a href="#" name="button" class="tweet_btn " id="post_btn" >Post Thread</a>
+                        </div>
+                    </div> 
+                   
+                </div>
+                <!-- <div class="col-md-3 search"> 
+                    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">1/<br>&quot;Why do my fingers get all wrinkly when I take a bath?” This was the question my 3-year-old daughter asked me recently after bath time. <br><br>I thought for a minute, then realized I didn&#39;t have a clue. <br><br>The explanation is so much cooler than I had expected... <a href="https://t.co/mFyeKm8Edc">pic.twitter.com/mFyeKm8Edc</a></p>&mdash; Tony Breu (@tony_breu) <a href="https://twitter.com/tony_breu/status/1017179836320710657?ref_src=twsrc%5Etfw">July 11, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div> -->
+            </div>
+            <div class="modal fade" id="mymodal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </body>
+</html>
