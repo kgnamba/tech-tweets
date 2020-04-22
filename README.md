@@ -62,3 +62,4 @@ Javascript functions for the twitter interface page.
 ***BEWARE*** - The callback URL for authentication is defined via the developer account. Have callback 127.0.0.1:5000 \
 ***BEWARE*** - Make sure that in server.py that your load_dotenv(dotenv_path= YOUR .ENV FILE) \
 Created using Python 3.7.3
+
